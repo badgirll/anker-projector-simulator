@@ -219,30 +219,22 @@ function setupEventListeners() {
             displaySpecsTable();
             calculate();
 
-            // Sync mobile select
-            document.getElementById('projector-select-mobile').value = card.dataset.id;
-        }
-    });
+            // Sync mobile custom select
+            const projector = projectorData[card.dataset.id];
+            const triggerImage = document.getElementById('custom-select-image');
+            const trigger = document.querySelector('.custom-select-trigger');
+            if (trigger && projector) {
+                triggerImage.src = projector.image;
+                triggerImage.alt = projector.name;
+                triggerImage.style.display = 'block';
+                trigger.querySelector('.custom-select-name').textContent = projector.name;
+                trigger.querySelector('.custom-select-price').textContent = projector.price;
 
-    // Projector selection (mobile dropdown)
-    document.getElementById('projector-select-mobile').addEventListener('change', (e) => {
-        const selectedId = e.target.value;
-        if (selectedId) {
-            state.selectedProjectorId = selectedId;
-
-            // Sync desktop cards
-            document.querySelectorAll('.projector-card').forEach(c => c.classList.remove('selected'));
-            const selectedCard = document.querySelector(`.projector-card[data-id="${selectedId}"]`);
-            if (selectedCard) {
-                selectedCard.classList.add('selected');
+                // Update selected state in options
+                document.querySelectorAll('.custom-select-option').forEach(opt => {
+                    opt.classList.toggle('selected', opt.dataset.id === card.dataset.id);
+                });
             }
-
-            displaySpecsTable();
-            calculate();
-        } else {
-            state.selectedProjectorId = null;
-            document.querySelectorAll('.projector-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('results-section').style.display = 'none';
         }
     });
 
@@ -360,12 +352,85 @@ function renderProjectorCards() {
         </div>
     `).join('');
 
-    // Populate mobile select
-    const mobileSelect = document.getElementById('projector-select-mobile');
-    const options = Object.entries(projectorData).map(([id, projector]) =>
-        `<option value="${id}">${projector.name} - ${projector.price}</option>`
-    ).join('');
-    mobileSelect.innerHTML = '<option value="">プロジェクターを選択してください</option>' + options;
+    // Populate custom mobile dropdown with images
+    const customSelectOptions = document.getElementById('custom-select-options');
+    const optionsHTML = Object.entries(projectorData).map(([id, projector]) => `
+        <div class="custom-select-option" data-id="${id}">
+            <img src="${projector.image}" alt="${projector.name}">
+            <div class="custom-select-info">
+                <div class="custom-select-name">${projector.name}</div>
+                <div class="custom-select-price">${projector.price}</div>
+            </div>
+        </div>
+    `).join('');
+    customSelectOptions.innerHTML = optionsHTML;
+
+    // Setup custom select click handlers
+    setupCustomSelectMobile();
+}
+
+// ============================================
+// Setup Custom Select Mobile
+// ============================================
+function setupCustomSelectMobile() {
+    const trigger = document.querySelector('.custom-select-trigger');
+    const optionsContainer = document.getElementById('custom-select-options');
+    const triggerImage = document.getElementById('custom-select-image');
+    const triggerName = trigger.querySelector('.custom-select-name');
+    const triggerPrice = trigger.querySelector('.custom-select-price');
+
+    // Toggle dropdown
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        trigger.classList.toggle('active');
+        optionsContainer.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-select-mobile')) {
+            trigger.classList.remove('active');
+            optionsContainer.classList.remove('show');
+        }
+    });
+
+    // Handle option selection with event delegation
+    optionsContainer.addEventListener('click', (e) => {
+        const option = e.target.closest('.custom-select-option');
+        if (!option) return;
+
+        const selectedId = option.dataset.id;
+        const projector = projectorData[selectedId];
+
+        // Update trigger display
+        triggerImage.src = projector.image;
+        triggerImage.alt = projector.name;
+        triggerImage.style.display = 'block';
+        triggerName.textContent = projector.name;
+        triggerPrice.textContent = projector.price;
+
+        // Update selected state
+        document.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+
+        // Update app state
+        state.selectedProjectorId = selectedId;
+
+        // Sync desktop cards
+        document.querySelectorAll('.projector-card').forEach(c => c.classList.remove('selected'));
+        const selectedCard = document.querySelector(`.projector-card[data-id="${selectedId}"]`);
+        if (selectedCard) {
+            selectedCard.classList.add('selected');
+        }
+
+        // Close dropdown
+        trigger.classList.remove('active');
+        optionsContainer.classList.remove('show');
+
+        // Update display
+        displaySpecsTable();
+        calculate();
+    });
 }
 
 // ============================================
@@ -859,35 +924,35 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
 
                 <!-- Distance label (TOP area - ABSOLUTE position) -->
                 <g>
-                    <rect x="${centerX - 85}" y="${distanceLabelY - 28}"
-                          width="170" height="50" rx="10"
+                    <rect x="${centerX - 95}" y="${distanceLabelY - 32}"
+                          width="190" height="60" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
-                    <text x="${centerX}" y="${distanceLabelY - 8}"
-                          fill="#2d3748" font-size="14" font-weight="600" text-anchor="middle">
+                    <text x="${centerX}" y="${distanceLabelY - 10}"
+                          fill="#2d3748" font-size="15" font-weight="600" text-anchor="middle">
                         投影距離
                     </text>
-                    <text x="${centerX}" y="${distanceLabelY + 15}"
-                          fill="#17BBEF" font-size="26" font-weight="700" text-anchor="middle">
+                    <text x="${centerX}" y="${distanceLabelY + 18}"
+                          fill="#17BBEF" font-size="32" font-weight="700" text-anchor="middle">
                         ${throwDistanceM.toFixed(2)}m
                     </text>
                 </g>
 
                 <!-- Screen label (LEFT of screen - ABSOLUTE position) -->
                 <g>
-                    <rect x="${screenLabelX}" y="${centerY - 42}"
-                          width="160" height="85" rx="10"
+                    <rect x="${screenLabelX}" y="${centerY - 48}"
+                          width="170" height="95" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
-                    <text x="${screenLabelX + 10}" y="${centerY - 20}"
-                          fill="#2d3748" font-size="14" font-weight="600">
+                    <text x="${screenLabelX + 10}" y="${centerY - 24}"
+                          fill="#2d3748" font-size="15" font-weight="600">
                         画面サイズ
                     </text>
                     <text x="${screenLabelX + 10}" y="${centerY + 5}"
                           fill="${isError ? '#dc3545' : '#17BBEF'}"
-                          font-size="24" font-weight="700">
+                          font-size="30" font-weight="700">
                         ${Math.round(screenDiagonal)}インチ
                     </text>
-                    <text x="${screenLabelX + 10}" y="${centerY + 27}"
-                          fill="#4a5568" font-size="13" font-weight="500">
+                    <text x="${screenLabelX + 10}" y="${centerY + 30}"
+                          fill="#4a5568" font-size="14" font-weight="500">
                         ${Math.round(screenWidth)}×${Math.round(screenHeight)}cm
                     </text>
                 </g>
@@ -1097,20 +1162,20 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
 
                 <!-- Screen dimensions label -->
                 <g>
-                    <rect x="${screenX - 110}" y="${screenY + screenHeightScaled / 2 + 20}"
-                          width="220" height="75" rx="10"
+                    <rect x="${screenX - 120}" y="${screenY + screenHeightScaled / 2 + 20}"
+                          width="240" height="85" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
-                    <text x="${screenX}" y="${screenY + screenHeightScaled / 2 + 38}"
-                          fill="#2d3748" font-size="14" font-weight="600" text-anchor="middle">
+                    <text x="${screenX}" y="${screenY + screenHeightScaled / 2 + 40}"
+                          fill="#2d3748" font-size="15" font-weight="600" text-anchor="middle">
                         画面サイズ
                     </text>
-                    <text x="${screenX}" y="${screenY + screenHeightScaled / 2 + 60}"
+                    <text x="${screenX}" y="${screenY + screenHeightScaled / 2 + 66}"
                           fill="${isError ? '#dc3545' : '#17BBEF'}"
-                          font-size="24" font-weight="700" text-anchor="middle">
+                          font-size="30" font-weight="700" text-anchor="middle">
                         ${Math.round(screenDiagonal)}インチ
                     </text>
-                    <text x="${screenX}" y="${screenY + screenHeightScaled / 2 + 80}"
-                          fill="#4a5568" font-size="14" font-weight="500" text-anchor="middle">
+                    <text x="${screenX}" y="${screenY + screenHeightScaled / 2 + 88}"
+                          fill="#4a5568" font-size="15" font-weight="500" text-anchor="middle">
                         ${Math.round(screenWidth)} × ${Math.round(screenHeight)} cm
                     </text>
                 </g>

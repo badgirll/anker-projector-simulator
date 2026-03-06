@@ -84,10 +84,20 @@
                     <!-- Projector Selection -->
                     <section class="card projector-section">
                         <h2>プロジェクターを選ぶ</h2>
-                        <!-- Mobile dropdown (hidden on desktop) -->
-                        <select id="projector-select-mobile" class="projector-select-mobile">
-                            <option value="">プロジェクターを選択してください</option>
-                        </select>
+                        <!-- Custom mobile dropdown with images (hidden on desktop) -->
+                        <div id="custom-select-mobile" class="custom-select-mobile">
+                            <div class="custom-select-trigger">
+                                <img src="" alt="" id="custom-select-image" style="display: none;">
+                                <div class="custom-select-info">
+                                    <div class="custom-select-name">プロジェクターを選択してください</div>
+                                    <div class="custom-select-price"></div>
+                                </div>
+                                <span class="custom-select-arrow">▼</span>
+                            </div>
+                            <div class="custom-select-options" id="custom-select-options">
+                                <!-- Options will be dynamically inserted here -->
+                            </div>
+                        </div>
                         <!-- Desktop grid (hidden on mobile) -->
                         <div class="projector-grid" id="projector-grid">
                             <!-- Projector cards will be dynamically inserted here -->
@@ -176,14 +186,12 @@
         <main class="mode-content" id="compare-mode">
             <div class="compare-layout">
                 <div class="compare-column">
-                    <h3>モデル 1</h3>
                     <select id="compare-model-1" class="compare-select">
                         <option value="">プロジェクターを選択</option>
                     </select>
                     <div id="compare-card-1" class="compare-card"></div>
                 </div>
                 <div class="compare-column">
-                    <h3>モデル 2</h3>
                     <select id="compare-model-2" class="compare-select">
                         <option value="">プロジェクターを選択</option>
                     </select>
