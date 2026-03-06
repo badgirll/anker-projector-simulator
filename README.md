@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b8fa6f9 (Initial commit: Anker projector simulator)
 # Ankerのプロジェクター 投影サイズシミュレーター
 
 プロフェッショナル仕様のAnkerプロジェクター投影シミュレーションツール。購買決定を支援する直感的でリッチな体験を提供します。
@@ -135,6 +138,9 @@ ai_test/
 ---
 
 **🎬 Nebulaで、あなたの部屋を映画館に。**
+<<<<<<< HEAD
 =======
 # anker-projector-simulator
 >>>>>>> 4f2189924426c08490e566d7ca3ab6fc2d68a6ed
+=======
+>>>>>>> b8fa6f9 (Initial commit: Anker projector simulator)

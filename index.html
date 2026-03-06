@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ankerのプロジェクター 投影サイズシミュレーター</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="hero-header">
+            <div class="hero-content">
+                <h1>Ankerのプロジェクター<br>投影サイズシミュレーター</h1>
+                <p>あなたの部屋で、どれくらい大きな映像体験ができるか体感しよう</p>
+            </div>
+        </header>
+
+        <!-- Mode Tabs -->
+        <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="single">シミュレーション</button>
+            <button class="mode-tab" data-mode="compare">モデル比較</button>
+        </div>
+
+        <!-- Single Mode -->
+        <main class="mode-content active" id="single-mode">
+            <div class="two-column-layout">
+                <div class="left-column">
+                    <!-- Calculation Mode Toggle -->
+                    <section class="card calc-mode-section">
+                        <h2>シミュレーション方法</h2>
+                        <div class="calc-mode-toggle">
+                            <label class="radio-card">
+                                <input type="radio" name="calc-mode" value="size-to-distance" checked>
+                                <div class="radio-content">
+                                    <span class="radio-icon">📐</span>
+                                    <span class="radio-label">投影画面サイズから距離を計算</span>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="calc-mode" value="distance-to-size">
+                                <div class="radio-content">
+                                    <span class="radio-icon">📏</span>
+                                    <span class="radio-label">距離から投影画面サイズを計算</span>
+                                </div>
+                            </label>
+                        </div>
+                    </section>
+
+                    <!-- Distance/Size Input -->
+                    <section class="card input-section">
+                        <div id="size-input-container">
+                            <h2>希望する画面サイズ</h2>
+                            <div class="input-group">
+                                <label for="desired-size">サイズ (インチ)</label>
+                                <input type="number" id="desired-size" placeholder="例: 100" min="10" max="300" step="10" value="100">
+                            </div>
+                            <div class="slider-group">
+                                <input type="range" id="size-slider" min="10" max="300" step="5" value="100">
+                                <div class="slider-labels">
+                                    <span>10"</span>
+                                    <span>300"</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="distance-input-container" style="display: none;">
+                            <h2>投影距離</h2>
+                            <div class="input-group">
+                                <label for="throw-distance">距離 (m)</label>
+                                <input type="number" id="throw-distance" placeholder="例: 2.7" min="0.1" max="10" step="0.1" value="2.7">
+                            </div>
+                            <div class="slider-group">
+                                <input type="range" id="distance-slider" min="0.1" max="10" step="0.1" value="2.7">
+                                <div class="slider-labels">
+                                    <span>0.1m</span>
+                                    <span>10m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Projector Selection -->
+                    <section class="card projector-section">
+                        <h2>プロジェクターを選ぶ</h2>
+                        <!-- Mobile dropdown (hidden on desktop) -->
+                        <select id="projector-select-mobile" class="projector-select-mobile">
+                            <option value="">プロジェクターを選択してください</option>
+                        </select>
+                        <!-- Desktop grid (hidden on mobile) -->
+                        <div class="projector-grid" id="projector-grid">
+                            <!-- Projector cards will be dynamically inserted here -->
+                        </div>
+                    </section>
+                </div>
+
+                <div class="right-column">
+                    <!-- Visualization -->
+                    <section class="card visualization-card">
+                        <div class="view-toggle">
+                            <button class="view-btn active" data-view="top">📐 上から見た図</button>
+                            <button class="view-btn" data-view="front">🖼️ 正面から見た図</button>
+                        </div>
+                        <div class="visualization" id="visualization">
+                            <div class="placeholder-text">
+                                <span class="placeholder-icon">🎬</span>
+                                <p>プロジェクターを選択して、<br>投影サイズを確認しましょう</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Results -->
+                    <section class="card results-card" id="results-section" style="display: none;">
+                        <div class="results-header">
+                            <h2>投影結果</h2>
+                        </div>
+                        <div class="results-main">
+                            <div class="result-item-main highlight-main">
+                                <span class="result-label-main">画面サイズ</span>
+                                <div class="result-value-main">
+                                    <span id="screen-diagonal">0</span>
+                                    <span class="unit-main">インチ</span>
+                                </div>
+                            </div>
+                            <div class="result-item-main highlight-main" id="calculated-distance-display" style="display: none;">
+                                <span class="result-label-main">必要な投影距離</span>
+                                <div class="result-value-main">
+                                    <span id="calculated-distance">0</span>
+                                    <span class="unit-main">m</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="result-label">幅</span>
+                                <div class="result-value-medium">
+                                    <span id="screen-width">0</span>
+                                    <span class="unit-small">cm</span>
+                                </div>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">高さ</span>
+                                <div class="result-value-medium">
+                                    <span id="screen-height">0</span>
+                                    <span class="unit-small">cm</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advice -->
+                        <div id="room-size-advice"></div>
+                        <div id="brightness-advice"></div>
+
+                        <!-- Purchase Button -->
+                        <div class="purchase-section" id="purchase-section" style="display: none;">
+                            <a id="purchase-button" href="#" target="_blank" class="btn-purchase">
+                                <span>🛒</span>
+                                <span>公式サイトで購入</span>
+                            </a>
+                        </div>
+                    </section>
+
+                    <!-- Product Specs -->
+                    <section class="card specs-section">
+                        <h2>製品仕様</h2>
+                        <div id="specs-table-container">
+                            <p class="select-prompt">プロジェクターを選択すると、仕様が表示されます</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Compare Mode -->
+        <main class="mode-content" id="compare-mode">
+            <div class="compare-layout">
+                <div class="compare-column">
+                    <h3>モデル 1</h3>
+                    <select id="compare-model-1" class="compare-select">
+                        <option value="">プロジェクターを選択</option>
+                    </select>
+                    <div id="compare-card-1" class="compare-card"></div>
+                </div>
+                <div class="compare-column">
+                    <h3>モデル 2</h3>
+                    <select id="compare-model-2" class="compare-select">
+                        <option value="">プロジェクターを選択</option>
+                    </select>
+                    <div id="compare-card-2" class="compare-card"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>※ これらの計算は概算値です。実際の設置条件により異なる場合があります。</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
