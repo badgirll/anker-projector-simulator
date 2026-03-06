@@ -457,6 +457,18 @@ body {
     display: none;
 }
 
+.custom-select-options::after {
+    content: '';
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, white);
+    pointer-events: none;
+    border-radius: 0 0 10px 10px;
+}
+
 .custom-select-options.show {
     display: block;
 }
@@ -1370,6 +1382,12 @@ footer {
         padding: 0.5rem;
         font-size: 0.8rem;
     }
+
+    /* Purchase section more compact */
+    .purchase-section {
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+    }
 }
 
 /* Extra small devices (phones, less than 480px) */
@@ -1435,16 +1453,27 @@ footer {
 
     /* Compact input sections for first view */
     .card {
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.3rem;
     }
 
     .input-section,
     .projector-section {
-        padding: 0.65rem;
+        padding: 0.6rem;
     }
 
     .calc-mode-section {
-        padding: 0.65rem;
+        padding: 0.6rem;
+    }
+
+    /* Right column cards */
+    .right-column .card {
+        margin-bottom: 0.3rem;
+    }
+
+    /* Purchase section more compact */
+    .purchase-section {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
     }
 
     /* Radio cards more compact */

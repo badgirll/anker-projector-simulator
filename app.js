@@ -1049,16 +1049,21 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
     const canvasHeight = 600;
     const padding = 40;
 
+    // Responsive viewBox width for mobile
+    const isMobile = window.innerWidth <= 480;
+    const viewBoxWidth = isMobile ? 600 : 900;
+    const centerX = viewBoxWidth / 2;
+
     // Calculate scale to fit wall and screen
     const contentWidth = Math.max(screenWidth * 1.3, 400);
     const contentHeight = wallHeight;
 
-    const scaleX = (900 - padding * 2) / contentWidth;
+    const scaleX = (viewBoxWidth - padding * 2) / contentWidth;
     const scaleY = (canvasHeight - padding * 2) / contentHeight;
     const scale = Math.min(scaleX, scaleY) * 0.9;
 
-    // Centered positions
-    const wallX = 450;
+    // Centered positions (responsive based on viewBox)
+    const wallX = centerX;
     const wallY = canvasHeight / 2;
     const wallWidthScaled = 500;
     const wallHeightScaled = wallHeight * scale;
@@ -1075,13 +1080,13 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
     const exceedsWall = screenHeightScaled > wallHeightScaled * 0.95;
 
     const errorOverlay = isError ? `
-        <rect x="0" y="0" width="900" height="${canvasHeight}"
+        <rect x="0" y="0" width="${viewBoxWidth}" height="${canvasHeight}"
               fill="rgba(220, 53, 69, 0.08)" />
-        <text x="${wallX}" y="${wallY - 30}"
+        <text x="${centerX}" y="${wallY - 30}"
               fill="#dc3545" font-size="32" font-weight="700" text-anchor="middle">
             ⚠️ 投影不可
         </text>
-        <text x="${wallX}" y="${wallY + 10}"
+        <text x="${centerX}" y="${wallY + 10}"
               fill="#dc3545" font-size="16" font-weight="600" text-anchor="middle" opacity="0.8">
             このサイズでは投影できません
         </text>
@@ -1089,7 +1094,7 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
 
     container.innerHTML = `
         <div class="canvas-container">
-            <svg width="100%" height="${canvasHeight}" viewBox="0 0 900 ${canvasHeight}"
+            <svg width="100%" height="${canvasHeight}" viewBox="0 0 ${viewBoxWidth} ${canvasHeight}"
                  preserveAspectRatio="xMidYMid meet" style="display: block; background: #ffffff;">
                 <defs>
                     <!-- Screen glow -->
