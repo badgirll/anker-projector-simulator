@@ -147,6 +147,7 @@ let state = {
 function init() {
     renderProjectorCards();
     setupEventListeners();
+    setupCustomSelectMobile();
     populateCompareSelects();
 }
 
@@ -364,9 +365,6 @@ function renderProjectorCards() {
         </div>
     `).join('');
     customSelectOptions.innerHTML = optionsHTML;
-
-    // Setup custom select click handlers
-    setupCustomSelectMobile();
 }
 
 // ============================================
@@ -396,6 +394,8 @@ function setupCustomSelectMobile() {
 
     // Handle option selection with event delegation
     optionsContainer.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent closing when clicking inside dropdown
+
         const option = e.target.closest('.custom-select-option');
         if (!option) return;
 
