@@ -783,6 +783,14 @@ function displaySizeError(requestedSize, minSize, maxSize, projectorName, throwD
         }
         viz.appendChild(errorOverlay);
     }, 50);
+
+    // Show purchase button even during error
+    const purchaseSection = document.getElementById('purchase-section');
+    const purchaseButton = document.getElementById('purchase-button');
+    if (state.selectedProjectorId && projector) {
+        purchaseButton.href = projector.url;
+        purchaseSection.style.display = 'block';
+    }
 }
 
 // ============================================
@@ -984,7 +992,7 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
                           width="5" height="${tv65Width * scale}"
                           fill="#10b981" stroke="none"/>
                     <text x="${screenX - 35}" y="${screenY}"
-                          fill="#10b981" font-size="12" font-weight="600"
+                          fill="#10b981" font-size="16" font-weight="600"
                           text-anchor="end" transform="rotate(-90 ${screenX - 35} ${screenY})">
                         📺 65型TV
                     </text>
@@ -996,7 +1004,7 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
                           width="5" height="${tv50Width * scale}"
                           fill="#10b981" stroke="none"/>
                     <text x="${screenX - 35}" y="${screenY}"
-                          fill="#10b981" font-size="12" font-weight="600"
+                          fill="#10b981" font-size="16" font-weight="600"
                           text-anchor="end" transform="rotate(-90 ${screenX - 35} ${screenY})">
                         📺 50型TV
                     </text>
@@ -1008,7 +1016,7 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
                           width="5" height="${posterWidth * scale}"
                           fill="#10b981" stroke="none"/>
                     <text x="${screenX - 35}" y="${screenY}"
-                          fill="#10b981" font-size="12" font-weight="600"
+                          fill="#10b981" font-size="16" font-weight="600"
                           text-anchor="end" transform="rotate(-90 ${screenX - 35} ${screenY})">
                         🎬 映画ポスター(A1)
                     </text>
