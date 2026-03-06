@@ -1046,12 +1046,12 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
     // Dynamic screen opacity based on brightness
     const bgOpacity = lumens >= 3000 ? 0.9 : lumens >= 1500 ? 0.8 : lumens >= 500 ? 0.6 : 0.4;
 
-    const canvasHeight = 600;
-    const padding = 40;
-
-    // Responsive viewBox width for mobile
+    // Responsive settings for mobile
     const isMobile = window.innerWidth <= 480;
+    const canvasHeight = isMobile ? 450 : 600;
+    const padding = isMobile ? 30 : 40;
     const viewBoxWidth = isMobile ? 600 : 900;
+    const viewBoxStartX = isMobile ? -80 : 0; // Shift right on mobile to show wall height label
     const centerX = viewBoxWidth / 2;
 
     // Calculate scale to fit wall and screen
@@ -1080,7 +1080,7 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
     const exceedsWall = screenHeightScaled > wallHeightScaled * 0.95;
 
     const errorOverlay = isError ? `
-        <rect x="0" y="0" width="${viewBoxWidth}" height="${canvasHeight}"
+        <rect x="${viewBoxStartX}" y="0" width="${viewBoxWidth}" height="${canvasHeight}"
               fill="rgba(220, 53, 69, 0.08)" />
         <text x="${centerX}" y="${wallY - 30}"
               fill="#dc3545" font-size="32" font-weight="700" text-anchor="middle">
@@ -1094,7 +1094,7 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
 
     container.innerHTML = `
         <div class="canvas-container">
-            <svg width="100%" height="${canvasHeight}" viewBox="0 0 ${viewBoxWidth} ${canvasHeight}"
+            <svg width="100%" height="${canvasHeight}" viewBox="${viewBoxStartX} 0 ${viewBoxWidth} ${canvasHeight}"
                  preserveAspectRatio="xMidYMid meet" style="display: block; background: #ffffff;">
                 <defs>
                     <!-- Screen glow -->
