@@ -1046,6 +1046,59 @@ body {
 }
 
 /* ============================================
+   Room Size Guide
+   ============================================ */
+.room-guide-section {
+    margin-top: 1.5rem;
+}
+
+.guide-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.room-guide-table {
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.room-guide-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.room-guide-table th,
+.room-guide-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.9rem;
+}
+
+.room-guide-table th {
+    background: linear-gradient(135deg, rgba(23, 187, 239, 0.1) 0%, rgba(13, 168, 219, 0.1) 100%);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.room-guide-table tbody tr:hover {
+    background: var(--bg-light);
+}
+
+.room-guide-table tbody tr:nth-child(even) {
+    background: rgba(248, 249, 250, 0.5);
+}
+
+.guide-note {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-style: italic;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* ============================================
    Compare Mode
    ============================================ */
 .compare-layout {
@@ -1388,6 +1441,17 @@ footer {
         margin-top: 0.75rem;
         padding-top: 0.75rem;
     }
+
+    /* Room guide table compact */
+    .room-guide-table th,
+    .room-guide-table td {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    .guide-note {
+        font-size: 0.8rem;
+    }
 }
 
 /* Extra small devices (phones, less than 480px) */
@@ -1635,6 +1699,18 @@ footer {
     .btn-compare-purchase {
         padding: 0.75rem;
         font-size: 0.9rem;
+    }
+
+    /* Room guide table - extra compact */
+    .room-guide-table th,
+    .room-guide-table td {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .guide-description,
+    .guide-note {
+        font-size: 0.75rem;
     }
 
     /* Error display - extra compact for small phones */

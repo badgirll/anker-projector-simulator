@@ -99,7 +99,7 @@ const projectorData = {
         lumens: 650,
         resolution: 'フルHD',
         weight: '約2.8kg',
-        type: 'ホーム型',
+        type: 'ホームシアター型',
         dataPoints: [
             { screenSize: 60, distance: 1.59 },
             { screenSize: 80, distance: 2.13 },
@@ -1054,18 +1054,19 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
     const viewBoxStartX = isMobile ? -80 : 0; // Shift right on mobile to show wall height label
     const centerX = viewBoxWidth / 2;
 
-    // Calculate scale to fit wall and screen
-    const contentWidth = Math.max(screenWidth * 1.3, 400);
+    // Calculate scale to fit wall and screen (80-90% of canvas width)
+    const targetWallWidth = viewBoxWidth * 0.85; // 85% of viewBox width
+    const wallWidthCm = 400; // Standard wall width representation in cm
     const contentHeight = wallHeight;
 
-    const scaleX = (viewBoxWidth - padding * 2) / contentWidth;
+    const scaleX = targetWallWidth / wallWidthCm;
     const scaleY = (canvasHeight - padding * 2) / contentHeight;
-    const scale = Math.min(scaleX, scaleY) * 0.9;
+    const scale = Math.min(scaleX, scaleY) * 0.95;
 
     // Centered positions (responsive based on viewBox)
     const wallX = centerX;
     const wallY = canvasHeight / 2;
-    const wallWidthScaled = 500;
+    const wallWidthScaled = wallWidthCm * scale;
     const wallHeightScaled = wallHeight * scale;
 
     const screenX = wallX;
@@ -1132,7 +1133,7 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
                     <text x="${wallX - wallWidthScaled / 2 - 45}" y="${wallY}"
                           fill="#6c757d" font-size="14" font-weight="600" text-anchor="end"
                           transform="rotate(-90 ${wallX - wallWidthScaled / 2 - 45} ${wallY})">
-                        壁の高さ 2.4m
+                        平均的な壁の高さ 2.4m
                     </text>
                 </g>
 
@@ -1175,22 +1176,33 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
 
                 <!-- Screen dimensions label -->
                 <g>
-                    <rect x="${screenX - 120}" y="${screenY + screenHeightScaled / 2 + 20}"
+                    ${(() => {
+                        // Adjust label position to avoid overlapping with door
+                        const labelWidth = 240;
+                        const labelLeftEdge = screenX - labelWidth / 2;
+                        const doorRightEdge = doorX + doorWidthScaled;
+                        const shouldShiftRight = labelLeftEdge < doorRightEdge + 20;
+                        const labelX = shouldShiftRight ? doorRightEdge + labelWidth / 2 + 30 : screenX;
+
+                        return `
+                    <rect x="${labelX - 120}" y="${screenY + screenHeightScaled / 2 + 20}"
                           width="240" height="85" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
-                    <text x="${screenX}" y="${screenY + screenHeightScaled / 2 + 40}"
+                    <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 40}"
                           fill="#2d3748" font-size="15" font-weight="600" text-anchor="middle">
                         画面サイズ
                     </text>
-                    <text x="${screenX}" y="${screenY + screenHeightScaled / 2 + 66}"
+                    <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 66}"
                           fill="${isError ? '#dc3545' : '#17BBEF'}"
                           font-size="30" font-weight="700" text-anchor="middle">
                         ${Math.round(screenDiagonal)}インチ
                     </text>
-                    <text x="${screenX}" y="${screenY + screenHeightScaled / 2 + 88}"
+                    <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 88}"
                           fill="#4a5568" font-size="15" font-weight="500" text-anchor="middle">
                         ${Math.round(screenWidth)} × ${Math.round(screenHeight)} cm
                     </text>
+                        `;
+                    })()}
                 </g>
 
                 ${errorOverlay}
@@ -1256,40 +1268,40 @@ function generateBrightnessAdvice(lumens, modelName) {
 
     // Specific advice per model based on actual specs
     if (lumens >= 3500) {
-        // X1
+        // Nebula X1
         advice.type = 'success';
         advice.icon = '☀️';
-        advice.message = `${lumens} ANSIルーメン。昼間でもOK！明るい環境でも鮮明な映像をお楽しみいただけます。`;
+        advice.message = `${lumens} ANSIルーメン。シリーズ史上最高の明るさを誇ります。日中の明るいリビングでもカーテンを閉め切ることなく、鮮明な映像を楽しめます。`;
     } else if (lumens >= 1800) {
-        // Cosmos 4K SE
+        // Nebula Cosmos 4K SE
         advice.type = 'success';
         advice.icon = '☀️';
-        advice.message = `${lumens} ANSIルーメン。昼間でもOK！ホームシアター体験に十分な明るさです。`;
+        advice.message = `${lumens} ANSIルーメン。昼間の利用も可能な4Kモデルです。ホームシアター体験に十分な明るさと高画質を両立しています。`;
     } else if (lumens >= 650) {
-        // Nebula P1
+        // Soundcore Nebula P1
         advice.type = 'success';
         advice.icon = '☀️';
-        advice.message = `${lumens} ANSIルーメン。カーテンを閉めた状態であれば昼間でもOK！`;
+        advice.message = `${lumens} ANSIルーメン。カーテンを閉めた状態であれば昼間でも利用可能な明るさです。リビングでの普段使いに適しています。`;
     } else if (lumens >= 380) {
-        // Nebula P1i
+        // Soundcore Nebula P1i
         advice.type = 'info';
         advice.icon = '🌤️';
-        advice.message = `${lumens} ANSIルーメン。比較的この価格帯のホーム型では明るいですが、夜間を推奨します。`;
+        advice.message = `${lumens} ANSIルーメン。同価格帯のホーム型と比較すると明るい部類ですが、鮮明に楽しむには夜間や遮光カーテンの使用を推奨します。`;
     } else if (lumens >= 300) {
-        // Capsule 3 Laser
+        // Nebula Capsule 3 Laser
         advice.type = 'info';
         advice.icon = '🌤️';
-        advice.message = `${lumens} ANSIルーメン。比較的モバイルの中では明るいですが、夜間を推奨します。`;
+        advice.message = `${lumens} ANSIルーメン。レーザー光源を採用し、モバイル型の中では際立つ明るさですが、鮮明に楽しむには、夜間や暗くしたお部屋での利用を推奨します。`;
     } else if (lumens >= 200) {
-        // Capsule 3
+        // Nebula Capsule 3
         advice.type = 'warning';
         advice.icon = '🌙';
-        advice.message = `${lumens} ANSIルーメン。夜間を推奨します。暗い環境で最高の映像体験を。`;
+        advice.message = `${lumens} ANSIルーメン。鮮明に楽しむには、夜間や暗くしたお部屋での利用を推奨します。コンパクトさと映像美のバランスが取れたモデルです。`;
     } else {
-        // Capsule Air
+        // Nebula Capsule Air
         advice.type = 'warning';
         advice.icon = '🌙';
-        advice.message = `${lumens} ANSIルーメン。夜間を推奨します。持ち運びやすく、暗い場所で活躍します。`;
+        advice.message = `${lumens} ANSIルーメン。完全に暗くした環境や夜間の利用を推奨します。シリーズ最軽量で持ち運びやすく、暗い環境で活躍します。`;
     }
 
     container.innerHTML = `
