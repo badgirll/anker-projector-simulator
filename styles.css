@@ -1019,24 +1019,45 @@ body {
 
 .specs-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .specs-table th,
 .specs-table td {
     padding: 0.75rem;
     text-align: left;
-    border-bottom: 1px solid var(--border-light);
     font-size: 0.9rem;
 }
 
 .specs-table th {
     background: var(--bg-light);
     font-weight: 600;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.specs-table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.specs-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.specs-table tbody tr:nth-child(odd) {
+    background: rgba(23, 187, 239, 0.03);
+}
+
+.specs-table tbody tr:nth-child(even) {
+    background: white;
 }
 
 .specs-table tbody tr:hover {
-    background: var(--bg-light);
+    background: linear-gradient(135deg, rgba(23, 187, 239, 0.08) 0%, rgba(13, 168, 219, 0.08) 100%);
+    transform: scale(1.005);
 }
 
 .select-prompt {
@@ -1088,14 +1109,13 @@ body {
 }
 
 .room-guide-table th {
-    background: linear-gradient(135deg, #17BBEF 0%, #0da8db 100%);
-    color: white;
+    background: var(--bg-light);
+    color: var(--text-primary);
     font-weight: 700;
     font-size: 1rem;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
     padding: 1.25rem 1.5rem;
     border: none;
+    border-bottom: 2px solid var(--border-light);
 }
 
 .room-guide-table th:first-child {
@@ -1253,14 +1273,16 @@ body {
 
 .compare-specs-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .compare-specs-table th,
 .compare-specs-table td {
     padding: 0.75rem;
     text-align: left;
-    border-bottom: 1px solid var(--border-light);
     font-size: 0.9rem;
 }
 
@@ -1268,6 +1290,28 @@ body {
     background: var(--bg-light);
     font-weight: 600;
     width: 40%;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.compare-specs-table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.compare-specs-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.compare-specs-table tbody tr:nth-child(odd) {
+    background: rgba(23, 187, 239, 0.03);
+}
+
+.compare-specs-table tbody tr:nth-child(even) {
+    background: white;
+}
+
+.compare-specs-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(23, 187, 239, 0.08) 0%, rgba(13, 168, 219, 0.08) 100%);
 }
 
 .btn-compare-purchase {
