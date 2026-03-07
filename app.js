@@ -9,6 +9,7 @@ const projectorData = {
         image: 'https://www.ankerjapan.com/cdn/shop/files/D4112-WHITE.jpg?v=1764600547',
         price: '¥49,990',
         url: 'https://www.ankerjapan.com/products/d4112',
+        amazonUrl: 'https://www.amazon.co.jp/dp/B0CXTB6CBR?m=A2Q9OW6QVJC5XE&tag=aoositmdtlpg-22',
         lumens: 150,
         resolution: 'HD',
         weight: '約650g',
@@ -26,6 +27,7 @@ const projectorData = {
         image: 'https://www.ankerjapan.com/cdn/shop/files/d2425main2.jpg?v=1741684499',
         price: '¥69,990',
         url: 'https://www.ankerjapan.com/products/d2425',
+        amazonUrl: 'https://www.amazon.co.jp/dp/B0CJDV213W?m=A2Q9OW6QVJC5XE&tag=aoositmdtlpg-22',
         lumens: 200,
         resolution: 'フルHD',
         weight: '約850g',
@@ -43,6 +45,7 @@ const projectorData = {
         image: 'https://www.ankerjapan.com/cdn/shop/files/D2426-BLACK.jpg?v=1764460798',
         price: '¥119,900',
         url: 'https://www.ankerjapan.com/products/d2426',
+        amazonUrl: 'https://www.amazon.co.jp/dp/B0BCTP8VJH?m=A2Q9OW6QVJC5XE&tag=aoositmdtlpg-22',
         lumens: 300,
         resolution: 'フルHD',
         weight: '約950g',
@@ -60,6 +63,7 @@ const projectorData = {
         image: 'https://www.ankerjapan.com/cdn/shop/files/D2200511.png?v=1770949949',
         price: '¥49,990',
         url: 'https://www.ankerjapan.com/products/d2200',
+        amazonUrl: 'https://www.amazon.co.jp/dp/B0FY2XXWPJ?m=A2Q9OW6QVJC5XE&tag=aoositmdtlpg-22',
         lumens: 380,
         resolution: 'フルHD',
         weight: '約2.3kg',
@@ -78,6 +82,7 @@ const projectorData = {
         image: 'https://www.ankerjapan.com/cdn/shop/files/D2342001.jpg?v=1751506553',
         price: '¥199,900',
         url: 'https://www.ankerjapan.com/products/d2342',
+        amazonUrl: 'https://www.amazon.co.jp/dp/B0D8HNB8LN?m=A2Q9OW6QVJC5XE&tag=aoositmdtlpg-22',
         lumens: 1800,
         resolution: '4K',
         weight: '約4.5kg',
@@ -96,6 +101,7 @@ const projectorData = {
         image: 'https://www.ankerjapan.com/cdn/shop/files/B121AN11.png?v=1770100089',
         price: '¥149,900',
         url: 'https://www.ankerjapan.com/products/d2431',
+        amazonUrl: 'https://www.amazon.co.jp/dp/B0FSCVT4G9?m=A2Q9OW6QVJC5XE&tag=aoositmdtlpg-22&th=1',
         lumens: 650,
         resolution: 'フルHD',
         weight: '約2.8kg',
@@ -114,6 +120,7 @@ const projectorData = {
         image: 'https://www.ankerjapan.com/cdn/shop/files/D23515F1.png?v=1764601262&width=400',
         price: '¥449,900',
         url: 'https://www.ankerjapan.com/products/n2351',
+        amazonUrl: 'https://www.amazon.co.jp/dp/B0F3CDQ1J1?m=A2Q9OW6QVJC5XE&tag=aoositmdtlpg-22&th=1',
         lumens: 3500,
         resolution: '4K',
         weight: '約6.2kg',
@@ -902,11 +909,13 @@ function displaySizeError(requestedSize, minSize, maxSize, projectorName, throwD
         viz.appendChild(errorOverlay);
     }, 50);
 
-    // Show purchase button even during error
+    // Show purchase buttons even during error
     const purchaseSection = document.getElementById('purchase-section');
     const purchaseButton = document.getElementById('purchase-button');
+    const amazonButton = document.getElementById('amazon-button');
     if (state.selectedProjectorId && projector) {
         purchaseButton.href = projector.url;
+        amazonButton.href = projector.amazonUrl;
         purchaseSection.style.display = 'block';
     }
 }

@@ -1044,6 +1044,9 @@ body {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-light);
+    display: flex !important;
+    flex-direction: row;
+    gap: 1.5rem;
 }
 
 .btn-purchase {
@@ -1053,20 +1056,34 @@ body {
     gap: 0.75rem;
     width: 100%;
     padding: 1.25rem;
-    background: #17BBEF;
     color: white;
     font-size: 1.1rem;
     font-weight: 700;
     text-decoration: none;
     border-radius: 12px;
     transition: all var(--transition-fast);
+}
+
+.btn-official {
+    background: #17BBEF;
     box-shadow: 0 4px 12px rgba(23, 187, 239, 0.3);
 }
 
-.btn-purchase:hover {
+.btn-official:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(23, 187, 239, 0.4);
     background: #0da8db;
+}
+
+.btn-amazon {
+    background: #FF9900;
+    box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+}
+
+.btn-amazon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 153, 0, 0.4);
+    background: #EC8800;
 }
 
 .btn-purchase span:first-child {
