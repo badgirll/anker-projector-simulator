@@ -554,13 +554,68 @@ function renderSizeDistanceTable() {
 
         projectorIds.forEach(id => {
             const projector = projectorData[id];
-            const distance = interpolateDistance(projector.dataPoints, size);
 
-            if (distance !== null) {
-                bodyHTML += `<td>${distance.toFixed(2)}m</td>`;
+            // Find exact match or interpolate
+            let distanceText = '-';
+            let isAvailable = false;
+
+            // Check for exact match first
+            const exactMatch = projector.dataPoints.find(dp => dp.screenSize === size);
+
+            if (exactMatch) {
+                // If exact match, check if it has range or single distance
+                if (exactMatch.distanceMin !== undefined && exactMatch.distanceMax !== undefined) {
+                    // Range model (like X1)
+                    distanceText = `${exactMatch.distanceMin.toFixed(2)}m - ${exactMatch.distanceMax.toFixed(2)}m`;
+                    isAvailable = true;
+                } else if (exactMatch.distance !== undefined) {
+                    // Fixed distance model
+                    distanceText = `${exactMatch.distance.toFixed(2)}m`;
+                    isAvailable = true;
+                }
             } else {
-                bodyHTML += `<td class="not-available">-</td>`;
+                // No exact match, try interpolation
+                const hasFixedDistances = projector.dataPoints.every(dp => dp.distance !== undefined);
+                const hasRangeDistances = projector.dataPoints.every(dp => dp.distanceMin !== undefined && dp.distanceMax !== undefined);
+
+                if (hasFixedDistances) {
+                    // Fixed distance model - interpolate single distance
+                    const distance = interpolateDistance(projector.dataPoints, size);
+                    if (distance !== null) {
+                        distanceText = `${distance.toFixed(2)}m`;
+                        isAvailable = true;
+                    }
+                } else if (hasRangeDistances) {
+                    // Range model (like X1) - interpolate both min and max
+                    const sortedPoints = [...projector.dataPoints].sort((a, b) => a.screenSize - b.screenSize);
+
+                    // Check if size is within the range of data points
+                    const minScreenSize = sortedPoints[0].screenSize;
+                    const maxScreenSize = sortedPoints[sortedPoints.length - 1].screenSize;
+
+                    if (size >= minScreenSize && size <= maxScreenSize) {
+                        // Find the two data points to interpolate between
+                        for (let i = 0; i < sortedPoints.length - 1; i++) {
+                            if (size >= sortedPoints[i].screenSize && size <= sortedPoints[i + 1].screenSize) {
+                                const ratio = (size - sortedPoints[i].screenSize) /
+                                            (sortedPoints[i + 1].screenSize - sortedPoints[i].screenSize);
+
+                                const interpolatedMin = sortedPoints[i].distanceMin +
+                                                       ratio * (sortedPoints[i + 1].distanceMin - sortedPoints[i].distanceMin);
+                                const interpolatedMax = sortedPoints[i].distanceMax +
+                                                       ratio * (sortedPoints[i + 1].distanceMax - sortedPoints[i].distanceMax);
+
+                                distanceText = `${interpolatedMin.toFixed(2)}m - ${interpolatedMax.toFixed(2)}m`;
+                                isAvailable = true;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
+
+            const cellClass = isAvailable ? '' : ' class="not-available"';
+            bodyHTML += `<td${cellClass}>${distanceText}</td>`;
         });
 
         bodyHTML += '</tr>';

@@ -529,10 +529,30 @@ body {
     border-radius: 12px;
     margin-top: 0.5rem;
     max-height: 300px;
-    overflow-y: auto;
+    overflow-y: scroll; /* Always show scrollbar */
     z-index: 1000;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     display: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Scrollbar styling for custom select dropdown */
+.custom-select-options::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-select-options::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0 10px 10px 0;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb {
+    background: var(--nebula-primary);
+    border-radius: 4px;
+}
+
+.custom-select-options::-webkit-scrollbar-thumb:hover {
+    background: var(--nebula-secondary);
 }
 
 .custom-select-options::after {
@@ -1266,6 +1286,27 @@ body {
 .size-distance-table-container {
     overflow-x: auto;
     margin-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+/* Scrollbar styling for better visibility */
+.size-distance-table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.size-distance-table-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+.size-distance-table-container::-webkit-scrollbar-thumb {
+    background: var(--nebula-primary);
+    border-radius: 4px;
+}
+
+.size-distance-table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--nebula-secondary);
 }
 
 .size-distance-table {
@@ -2077,6 +2118,23 @@ footer {
     }
 
     /* Size distance table - extra compact */
+    .size-distance-table-container {
+        overflow-x: scroll; /* Always show scrollbar on mobile */
+        padding-bottom: 0.5rem; /* Space for scrollbar */
+    }
+
+    /* Shadow hint for horizontal scroll */
+    .size-distance-table-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30px;
+        height: calc(100% - 0.5rem);
+        background: linear-gradient(to left, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 100%);
+        pointer-events: none;
+    }
+
     .size-distance-table {
         font-size: 0.7rem;
     }
