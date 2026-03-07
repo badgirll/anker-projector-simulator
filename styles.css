@@ -1074,7 +1074,6 @@ body {
 .purchase-section {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
-    border-top: 1px solid var(--border-light);
     display: flex !important;
     flex-direction: row;
     gap: 1.5rem;
@@ -1883,10 +1882,31 @@ footer {
 
     .visualization-card {
         padding: 0.25rem;
+        position: relative;
+    }
+
+    /* Add "投影結果" heading above visualization on mobile */
+    .visualization-card::before {
+        content: '投影結果';
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        padding: 0.6rem 0.6rem 0.3rem;
     }
 
     .visualization {
         min-height: 200px;
+    }
+
+    /* Hide duplicate "投影結果" heading from results-card on mobile */
+    .results-card .results-header {
+        display: none;
+    }
+
+    /* Remove top margin from results-card to make it visually connected */
+    .results-card {
+        margin-top: 0;
     }
 
     .view-toggle {
