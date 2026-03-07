@@ -225,11 +225,17 @@ function setupEventListeners() {
             const triggerImage = document.getElementById('custom-select-image');
             const trigger = document.querySelector('.custom-select-trigger');
             if (trigger && projector) {
+                const range = getProjectorRange(projector);
+                const rangeText = state.calcMode === 'size-to-distance'
+                    ? `推奨サイズ：${range.minSize}~${range.maxSize}インチ`
+                    : `推奨距離：${range.minDistance.toFixed(2)}~${range.maxDistance.toFixed(2)}m`;
+
                 triggerImage.src = projector.image;
                 triggerImage.alt = projector.name;
                 triggerImage.style.display = 'block';
                 trigger.querySelector('.custom-select-name').textContent = projector.name;
                 trigger.querySelector('.custom-select-price').textContent = projector.price;
+                trigger.querySelector('.custom-select-range').textContent = rangeText;
 
                 // Update selected state in options
                 document.querySelectorAll('.custom-select-option').forEach(opt => {
@@ -297,6 +303,24 @@ function toggleCalcMode() {
         distanceContainer.style.display = 'none';
         sizeContainer.style.display = 'block';
     }
+
+    // Re-render projector cards to update range text
+    renderProjectorCards();
+
+    // Update mobile trigger if a projector is selected
+    if (state.selectedProjectorId) {
+        const projector = projectorData[state.selectedProjectorId];
+        const trigger = document.querySelector('.custom-select-trigger');
+        const triggerRange = trigger?.querySelector('.custom-select-range');
+
+        if (triggerRange && projector) {
+            const range = getProjectorRange(projector);
+            const rangeText = state.calcMode === 'size-to-distance'
+                ? `推奨サイズ：${range.minSize}~${range.maxSize}インチ`
+                : `推奨距離：${range.minDistance.toFixed(2)}~${range.maxDistance.toFixed(2)}m`;
+            triggerRange.textContent = rangeText;
+        }
+    }
 }
 
 // ============================================
@@ -339,31 +363,65 @@ function addSliderTooltips(slider) {
 }
 
 // ============================================
+// Get Projector Range
+// ============================================
+function getProjectorRange(projector) {
+    const dataPoints = projector.dataPoints;
+    const minSize = Math.min(...dataPoints.map(dp => dp.screenSize));
+    const maxSize = Math.max(...dataPoints.map(dp => dp.screenSize));
+
+    // Calculate distances for min and max sizes
+    const minSizePoint = dataPoints.find(dp => dp.screenSize === minSize);
+    const maxSizePoint = dataPoints.find(dp => dp.screenSize === maxSize);
+
+    const minDistance = minSizePoint.distance || minSizePoint.distanceMin;
+    const maxDistance = maxSizePoint.distance || maxSizePoint.distanceMax;
+
+    return { minSize, maxSize, minDistance, maxDistance };
+}
+
+// ============================================
 // Render Projector Cards
 // ============================================
 function renderProjectorCards() {
     const grid = document.getElementById('projector-grid');
-    grid.innerHTML = Object.entries(projectorData).map(([id, projector]) => `
-        <div class="projector-card" data-id="${id}">
-            <img src="${projector.image}" alt="${projector.name}" class="projector-thumb">
-            <div class="projector-info">
-                <div class="projector-name">${projector.name}</div>
-                <div class="projector-price">${projector.price}</div>
+    grid.innerHTML = Object.entries(projectorData).map(([id, projector]) => {
+        const range = getProjectorRange(projector);
+        const rangeText = state.calcMode === 'size-to-distance'
+            ? `推奨サイズ：${range.minSize}~${range.maxSize}インチ`
+            : `推奨距離：${range.minDistance.toFixed(2)}~${range.maxDistance.toFixed(2)}m`;
+
+        return `
+            <div class="projector-card" data-id="${id}">
+                <img src="${projector.image}" alt="${projector.name}" class="projector-thumb">
+                <div class="projector-info">
+                    <div class="projector-name">${projector.name}</div>
+                    <div class="projector-price">${projector.price}</div>
+                    <div class="projector-range">${rangeText}</div>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
     // Populate custom mobile dropdown with images
     const customSelectOptions = document.getElementById('custom-select-options');
-    const optionsHTML = Object.entries(projectorData).map(([id, projector]) => `
-        <div class="custom-select-option" data-id="${id}">
-            <img src="${projector.image}" alt="${projector.name}">
-            <div class="custom-select-info">
-                <div class="custom-select-name">${projector.name}</div>
-                <div class="custom-select-price">${projector.price}</div>
+    const optionsHTML = Object.entries(projectorData).map(([id, projector]) => {
+        const range = getProjectorRange(projector);
+        const rangeText = state.calcMode === 'size-to-distance'
+            ? `推奨サイズ：${range.minSize}~${range.maxSize}インチ`
+            : `推奨距離：${range.minDistance.toFixed(2)}~${range.maxDistance.toFixed(2)}m`;
+
+        return `
+            <div class="custom-select-option" data-id="${id}">
+                <img src="${projector.image}" alt="${projector.name}">
+                <div class="custom-select-info">
+                    <div class="custom-select-name">${projector.name}</div>
+                    <div class="custom-select-price">${projector.price}</div>
+                    <div class="custom-select-range">${rangeText}</div>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
     customSelectOptions.innerHTML = optionsHTML;
 }
 
@@ -376,6 +434,7 @@ function setupCustomSelectMobile() {
     const triggerImage = document.getElementById('custom-select-image');
     const triggerName = trigger.querySelector('.custom-select-name');
     const triggerPrice = trigger.querySelector('.custom-select-price');
+    const triggerRange = trigger.querySelector('.custom-select-range');
 
     // Toggle dropdown
     trigger.addEventListener('click', (e) => {
@@ -401,6 +460,10 @@ function setupCustomSelectMobile() {
 
         const selectedId = option.dataset.id;
         const projector = projectorData[selectedId];
+        const range = getProjectorRange(projector);
+        const rangeText = state.calcMode === 'size-to-distance'
+            ? `推奨サイズ：${range.minSize}~${range.maxSize}インチ`
+            : `推奨距離：${range.minDistance.toFixed(2)}~${range.maxDistance.toFixed(2)}m`;
 
         // Update trigger display
         triggerImage.src = projector.image;
@@ -408,6 +471,7 @@ function setupCustomSelectMobile() {
         triggerImage.style.display = 'block';
         triggerName.textContent = projector.name;
         triggerPrice.textContent = projector.price;
+        triggerRange.textContent = rangeText;
 
         // Update selected state
         document.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
@@ -713,7 +777,7 @@ function displaySizeError(requestedSize, minSize, maxSize, projectorName, throwD
         // Distance-to-size mode: show distance-based messages
         const isOverMaxDistance = throwDistance > maxDistance;
         message = isOverMaxDistance
-            ? `この距離では投影できません`
+            ? `投影距離が遠すぎます`
             : `投影距離が短すぎます`;
 
         advice = isOverMaxDistance
@@ -727,7 +791,7 @@ function displaySizeError(requestedSize, minSize, maxSize, projectorName, throwD
     } else {
         // Size-to-distance mode: show size-based messages
         message = isOverMax
-            ? `このサイズでは投影できません`
+            ? `投影サイズが大きすぎます`
             : `投影サイズが小さすぎます`;
 
         advice = isOverMax
@@ -863,7 +927,7 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
         </text>
         <text x="${centerX}" y="${centerY + 15}"
               fill="#dc3545" font-size="17" font-weight="600" text-anchor="middle" opacity="0.8">
-            このサイズでは投影できません
+            投影サイズが大きすぎます
         </text>
     ` : '';
 
@@ -1026,7 +1090,7 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
                 ${errorOverlay}
             </svg>
             <div class="viz-caption">
-                ${isError ? '⚠️ このサイズでは投影できません' : '💡 上から見た投影イメージ（光の広がりを再現）'}
+                ${isError ? '⚠️ 投影サイズが大きすぎます' : '💡 上から見た投影イメージ（光の広がりを再現）'}
             </div>
         </div>
     `;
@@ -1089,7 +1153,7 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
         </text>
         <text x="${centerX}" y="${wallY + 10}"
               fill="#dc3545" font-size="16" font-weight="600" text-anchor="middle" opacity="0.8">
-            このサイズでは投影できません
+            投影サイズが大きすぎます
         </text>
     ` : '';
 
@@ -1208,7 +1272,7 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
                 ${errorOverlay}
             </svg>
             <div class="viz-caption">
-                ${isError ? '⚠️ このサイズでは投影できません' : '🖼️ 正面から見た投影イメージ（壁との比較）'}
+                ${isError ? '⚠️ 投影サイズが大きすぎます' : '🖼️ 正面から見た投影イメージ（壁との比較）'}
             </div>
         </div>
     `;
@@ -1271,37 +1335,37 @@ function generateBrightnessAdvice(lumens, modelName) {
         // Nebula X1
         advice.type = 'success';
         advice.icon = '☀️';
-        advice.message = `${lumens} ANSIルーメン。シリーズ史上最高の明るさを誇ります。日中の明るいリビングでもカーテンを閉め切ることなく、鮮明な映像を楽しめます。`;
+        advice.message = `${lumens}ANSIルーメン。シリーズ史上最高の明るさを誇ります。日中の明るいリビングでもカーテンを閉め切ることなく、鮮明な映像を楽しめます。`;
     } else if (lumens >= 1800) {
         // Nebula Cosmos 4K SE
         advice.type = 'success';
         advice.icon = '☀️';
-        advice.message = `${lumens} ANSIルーメン。昼間の利用も可能な4Kモデルです。ホームシアター体験に十分な明るさと高画質を両立しています。`;
+        advice.message = `${lumens}ANSIルーメン。昼間の利用も可能な4Kモデルです。ホームシアター体験に十分な明るさと高画質を両立しています。`;
     } else if (lumens >= 650) {
         // Soundcore Nebula P1
         advice.type = 'success';
         advice.icon = '☀️';
-        advice.message = `${lumens} ANSIルーメン。カーテンを閉めた状態であれば昼間でも利用可能な明るさです。リビングでの普段使いに適しています。`;
+        advice.message = `${lumens}ANSIルーメン。カーテンを閉めた状態であれば昼間でも利用可能な明るさです。リビングでの普段使いに適しています。`;
     } else if (lumens >= 380) {
         // Soundcore Nebula P1i
         advice.type = 'info';
         advice.icon = '🌤️';
-        advice.message = `${lumens} ANSIルーメン。同価格帯のホーム型と比較すると明るい部類ですが、鮮明に楽しむには夜間や遮光カーテンの使用を推奨します。`;
+        advice.message = `${lumens}ANSIルーメン。同価格帯のホーム型と比較すると明るい部類ですが、鮮明に楽しむには夜間や遮光カーテンの使用を推奨します。`;
     } else if (lumens >= 300) {
         // Nebula Capsule 3 Laser
         advice.type = 'info';
         advice.icon = '🌤️';
-        advice.message = `${lumens} ANSIルーメン。レーザー光源を採用し、モバイル型の中では際立つ明るさですが、鮮明に楽しむには、夜間や暗くしたお部屋での利用を推奨します。`;
+        advice.message = `${lumens}ANSIルーメン。レーザー光源を採用し、モバイル型の中では際立つ明るさですが、鮮明に楽しむには、夜間や暗くしたお部屋での利用を推奨します。`;
     } else if (lumens >= 200) {
         // Nebula Capsule 3
         advice.type = 'warning';
         advice.icon = '🌙';
-        advice.message = `${lumens} ANSIルーメン。鮮明に楽しむには、夜間や暗くしたお部屋での利用を推奨します。コンパクトさと映像美のバランスが取れたモデルです。`;
+        advice.message = `${lumens}ANSIルーメン。鮮明に楽しむには、夜間や暗くしたお部屋での利用を推奨します。コンパクトさと映像美のバランスが取れたモデルです。`;
     } else {
         // Nebula Capsule Air
         advice.type = 'warning';
         advice.icon = '🌙';
-        advice.message = `${lumens} ANSIルーメン。完全に暗くした環境や夜間の利用を推奨します。シリーズ最軽量で持ち運びやすく、暗い環境で活躍します。`;
+        advice.message = `${lumens}ANSIルーメン。完全に暗くした環境や夜間の利用を推奨します。シリーズ最軽量で持ち運びやすく、暗い環境で活躍します。`;
     }
 
     container.innerHTML = `
@@ -1432,7 +1496,7 @@ function renderCompareCard(modelId, containerId) {
                 </tr>
                 <tr>
                     <th>明るさ</th>
-                    <td>${projector.lumens} ANSIルーメン</td>
+                    <td>${projector.lumens}ANSIルーメン</td>
                 </tr>
                 <tr>
                     <th>投影サイズ</th>

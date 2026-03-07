@@ -66,13 +66,13 @@
 
 | モデル | 明るさ | 解像度 | 投影範囲 | 価格 |
 |--------|--------|--------|----------|------|
-| **Nebula X1** | 3500 ANSI lm | 4K | 80-300" | ¥449,900 |
-| **Cosmos 4K SE** | 1800 ANSI lm | 4K | 60-200" | ¥199,900 |
-| **Soundcore Nebula P1** | 650 ANSI lm | フルHD | 60-180" | ¥149,900 |
-| **Capsule 3 Laser** | 300 ANSI lm | フルHD | 60-120" | ¥119,900 |
-| **Capsule 3** | 200 ANSI lm | フルHD | 60-120" | ¥69,990 |
-| **Soundcore Nebula P1i** | 380 ANSI lm | フルHD | 40-150" | ¥49,990 |
-| **Capsule Air** | 150 ANSI lm | HD | 10-100" | ¥49,990 |
+| **Nebula X1** | 3500ANSI lm | 4K | 80-300" | ¥449,900 |
+| **Cosmos 4K SE** | 1800ANSI lm | 4K | 60-200" | ¥199,900 |
+| **Soundcore Nebula P1** | 650ANSI lm | フルHD | 60-180" | ¥149,900 |
+| **Capsule 3 Laser** | 300ANSI lm | フルHD | 60-120" | ¥119,900 |
+| **Capsule 3** | 200ANSI lm | フルHD | 60-120" | ¥69,990 |
+| **Soundcore Nebula P1i** | 380ANSI lm | フルHD | 40-150" | ¥49,990 |
+| **Capsule Air** | 150ANSI lm | HD | 10-100" | ¥49,990 |
 
 ## 🚀 使い方
 
@@ -116,7 +116,10 @@ ai_test/
 ├── index.html      # UI構造（視点切替、スライダー、モード切替）
 ├── styles.css      # Nebulaブランドスタイル（グラデーション、カード）
 ├── app.js          # ロジック（計算、可視化、エラーハンドリング）
+├── fonts/          # Mont for Ankerカスタムフォント（5ウェイト）
+├── auth.js         # 認証ロジック
 ├── CLAUDE.md       # 開発者向けガイド
+├── DEPLOY.md       # デプロイ手順
 └── README.md       # このファイル
 ```
 

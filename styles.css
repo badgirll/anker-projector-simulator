@@ -472,6 +472,13 @@ body {
     color: var(--text-secondary);
 }
 
+.custom-select-range {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 0.15rem;
+}
+
 .custom-select-arrow {
     font-size: 1.2rem;
     color: var(--text-secondary);
@@ -599,6 +606,13 @@ body {
     font-size: 0.95rem;
     color: var(--text-secondary);
     font-weight: 500;
+}
+
+.projector-range {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 0.25rem;
 }
 
 /* ============================================
@@ -1751,6 +1765,10 @@ footer {
 
     .custom-select-price {
         font-size: 0.75rem;
+    }
+
+    .custom-select-range {
+        font-size: 0.7rem;
     }
 
     .custom-select-option {
