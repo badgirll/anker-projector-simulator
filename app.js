@@ -930,11 +930,15 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
     const availableWidth = canvasWidth - labelPadding;
     const availableHeight = canvasHeight - topBottomPadding;
 
-    // Calculate scale to fit 80-90% of available space
-    const targetWidth = availableWidth * 0.85;
-    const scaleByWidth = targetWidth / throwDistanceCm;
-    const scaleByHeight = availableHeight / screenWidth;
-    const scale = Math.min(scaleByWidth, scaleByHeight);
+    // FIXED SCALE: 65" TV (143cm) as reference = 150px
+    const tv65Width = 143; // cm
+    const tv65PixelWidth = 150; // px (fixed reference size)
+    const baseScale = tv65PixelWidth / tv65Width; // px per cm
+
+    // Calculate scale with limits to keep diagram on screen
+    const maxScaleByWidth = availableWidth * 0.9 / throwDistanceCm;
+    const maxScaleByHeight = availableHeight * 0.9 / screenWidth;
+    const scale = Math.min(baseScale, maxScaleByWidth, maxScaleByHeight);
 
     // Calculate scaled dimensions
     const scaledThrowDistance = throwDistanceCm * scale;
@@ -951,11 +955,6 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
     // Projector position (RIGHT end of diagram)
     const projectorX = centerX + scaledThrowDistance / 2;
     const projectorY = centerY;
-
-    // Comparison objects (in cm)
-    const tv65Width = 143;
-    const tv50Width = 111;
-    const posterWidth = 60; // 映画ポスター（A1サイズ相当：約60cm幅）
 
     // ABSOLUTE LABEL POSITIONS (no overlap guaranteed)
     const distanceLabelY = 60;  // TOP area: above everything
@@ -1053,12 +1052,12 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
                     <rect x="${centerX - 95}" y="${distanceLabelY - 32}"
                           width="190" height="60" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
-                    <text x="${centerX}" y="${distanceLabelY - 10}"
+                    <text x="${centerX}" y="${distanceLabelY - 15}"
                           fill="#2d3748" font-size="15" font-weight="600" text-anchor="middle">
                         投影距離
                     </text>
-                    <text x="${centerX}" y="${distanceLabelY + 18}"
-                          fill="#17BBEF" font-size="32" font-weight="700" text-anchor="middle">
+                    <text x="${centerX}" y="${distanceLabelY + 28}"
+                          fill="#17BBEF" font-size="32" font-weight="700" text-anchor="middle" style="line-height: 1.2;">
                         ${throwDistanceM.toFixed(2)}m
                     </text>
                 </g>
@@ -1068,16 +1067,16 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
                     <rect x="${screenLabelX}" y="${centerY - 48}"
                           width="170" height="95" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
-                    <text x="${screenLabelX + 10}" y="${centerY - 24}"
+                    <text x="${screenLabelX + 10}" y="${centerY - 30}"
                           fill="#2d3748" font-size="15" font-weight="600">
                         画面サイズ
                     </text>
-                    <text x="${screenLabelX + 10}" y="${centerY + 5}"
+                    <text x="${screenLabelX + 10}" y="${centerY + 10}"
                           fill="${isError ? '#dc3545' : '#17BBEF'}"
-                          font-size="30" font-weight="700">
+                          font-size="30" font-weight="700" style="line-height: 1.2;">
                         ${Math.round(screenDiagonal)}インチ
                     </text>
-                    <text x="${screenLabelX + 10}" y="${centerY + 30}"
+                    <text x="${screenLabelX + 10}" y="${centerY + 42}"
                           fill="#4a5568" font-size="14" font-weight="500">
                         ${Math.round(screenWidth)}×${Math.round(screenHeight)}cm
                     </text>
@@ -1103,40 +1102,16 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
                     </text>
                 </g>
 
-                ${!isError && screenWidth > tv65Width * 1.1 ? `
-                <!-- TV comparison - drawn last to avoid any filter effects -->
-                <g opacity="1">
-                    <rect x="${screenX - 25}" y="${screenY - (tv65Width * scale) / 2}"
+                ${!isError ? `
+                <!-- 65" TV as FIXED REFERENCE (always shown, centered) -->
+                <g opacity="0.9">
+                    <rect x="${screenX - 25}" y="${centerY - (tv65Width * scale) / 2}"
                           width="5" height="${tv65Width * scale}"
                           fill="#10b981" stroke="none"/>
-                    <text x="${screenX - 35}" y="${screenY}"
+                    <text x="${screenX - 35}" y="${centerY}"
                           fill="#10b981" font-size="16" font-weight="600"
-                          text-anchor="end" transform="rotate(-90 ${screenX - 35} ${screenY})">
-                        📺 65型TV
-                    </text>
-                </g>
-                ` : !isError && screenWidth > tv50Width * 1.1 ? `
-                <!-- TV comparison - drawn last to avoid any filter effects -->
-                <g opacity="1">
-                    <rect x="${screenX - 25}" y="${screenY - (tv50Width * scale) / 2}"
-                          width="5" height="${tv50Width * scale}"
-                          fill="#10b981" stroke="none"/>
-                    <text x="${screenX - 35}" y="${screenY}"
-                          fill="#10b981" font-size="16" font-weight="600"
-                          text-anchor="end" transform="rotate(-90 ${screenX - 35} ${screenY})">
-                        📺 50型TV
-                    </text>
-                </g>
-                ` : !isError && screenWidth > posterWidth ? `
-                <!-- TV comparison - drawn last to avoid any filter effects -->
-                <g opacity="1">
-                    <rect x="${screenX - 25}" y="${screenY - (posterWidth * scale) / 2}"
-                          width="5" height="${posterWidth * scale}"
-                          fill="#10b981" stroke="none"/>
-                    <text x="${screenX - 35}" y="${screenY}"
-                          fill="#10b981" font-size="16" font-weight="600"
-                          text-anchor="end" transform="rotate(-90 ${screenX - 35} ${screenY})">
-                        🎬 映画ポスター(A1)
+                          text-anchor="middle" transform="rotate(-90 ${screenX - 35} ${centerY})">
+                        📺 65型TV（基準）
                     </text>
                 </g>
                 ` : ''}
@@ -1249,7 +1224,7 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
                           x2="${wallX - wallWidthScaled / 2 - 25}" y2="${wallY + wallHeightScaled / 2}"
                           stroke="#6c757d" stroke-width="2"/>
                     <text x="${wallX - wallWidthScaled / 2 - 45}" y="${wallY}"
-                          fill="#6c757d" font-size="14" font-weight="600" text-anchor="end"
+                          fill="#6c757d" font-size="14" font-weight="600" text-anchor="middle"
                           transform="rotate(-90 ${wallX - wallWidthScaled / 2 - 45} ${wallY})">
                         平均的な壁の高さ 2.4m
                     </text>
@@ -1306,16 +1281,16 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
                     <rect x="${labelX - 120}" y="${screenY + screenHeightScaled / 2 + 20}"
                           width="240" height="85" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
-                    <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 40}"
+                    <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 35}"
                           fill="#2d3748" font-size="15" font-weight="600" text-anchor="middle">
                         画面サイズ
                     </text>
-                    <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 66}"
+                    <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 75}"
                           fill="${isError ? '#dc3545' : '#17BBEF'}"
-                          font-size="30" font-weight="700" text-anchor="middle">
+                          font-size="30" font-weight="700" text-anchor="middle" style="line-height: 1.2;">
                         ${Math.round(screenDiagonal)}インチ
                     </text>
-                    <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 88}"
+                    <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 103}"
                           fill="#4a5568" font-size="15" font-weight="500" text-anchor="middle">
                         ${Math.round(screenWidth)} × ${Math.round(screenHeight)} cm
                     </text>
