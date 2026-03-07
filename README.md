@@ -137,6 +137,79 @@ ai_test/
 └── README.md       # このファイル
 ```
 
+## 🧮 投影サイズ・距離の計算方法
+
+このシミュレーターは**線形補間（Linear Interpolation）**を使用して、正確な投影シミュレーションを実現しています。
+
+### データポイントベースのアプローチ
+
+従来のプロジェクターで使われる「スローレシオ」（固定比率）ではなく、メーカーが実測した正確なデータポイントを使用：
+
+```javascript
+// 例：Nebula Cosmos 4K SE
+dataPoints: [
+    { screenSize: 60, distance: 1.6 },   // 60インチ → 1.6m
+    { screenSize: 100, distance: 2.7 },  // 100インチ → 2.7m
+    { screenSize: 120, distance: 3.2 }   // 120インチ → 3.2m
+]
+```
+
+### 線形補間の計算式
+
+**モード1: 画面サイズから距離を計算**
+
+```javascript
+// 例：90インチの投影に必要な距離を計算
+// 60インチ(1.6m) と 100インチ(2.7m) の間を補間
+
+const ratio = (90 - 60) / (100 - 60)      // 0.75
+const distance = 1.6 + 0.75 * (2.7 - 1.6) // 2.425m
+```
+
+**モード2: 距離から投影可能な画面サイズを計算**
+
+```javascript
+// 例：2.0mの距離で投影可能なサイズを計算
+// 1.6m(60インチ) と 2.7m(100インチ) の間を補間
+
+const ratio = (2.0 - 1.6) / (2.7 - 1.6)   // 0.364
+const screenSize = 60 + 0.364 * (100 - 60) // 74.5インチ
+```
+
+### 範囲モデル（Nebula X1）の補間
+
+X1のようなズーム機能を持つモデルは、距離に幅があるため両端を補間：
+
+```javascript
+// データポイント例
+{ screenSize: 100, distanceMin: 2.0, distanceMax: 3.3 }
+
+// 両方を線形補間
+interpolatedMin = 線形補間(distanceMin)
+interpolatedMax = 線形補間(distanceMax)
+
+// 結果：「2.0m - 3.3m」のような範囲表示
+```
+
+### 画面の幅・高さ計算
+
+16:9のアスペクト比から、対角線サイズを幅・高さに変換：
+
+```javascript
+const aspectRatio = 16 / 9
+const widthInches = Math.sqrt(diagonal² / (1 + (1/aspectRatio)²))
+const widthCm = widthInches * 2.54  // インチ→cm変換
+const heightCm = widthCm / aspectRatio
+```
+
+### なぜ線形補間を使うのか？
+
+- **レンズ特性**: Nebulaプロジェクターは完全な直線関係ではないため、実測値の方が正確
+- **精度**: メーカー提供の実測データに基づくため信頼性が高い
+- **柔軟性**: データポイント間を補間することで、任意のサイズ/距離に対応可能
+
+この方法により、**実測値に基づいた高精度なシミュレーション**を実現しています。
+
 ## 📐 部屋の広さガイド
 
 ### 投影距離と必要な部屋の広さの関係
