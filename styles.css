@@ -555,18 +555,6 @@ body {
     background: var(--nebula-secondary);
 }
 
-.custom-select-options::after {
-    content: '';
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 40px;
-    background: linear-gradient(to bottom, transparent, white);
-    pointer-events: none;
-    border-radius: 0 0 10px 10px;
-}
-
 .custom-select-options.show {
     display: block;
 }
@@ -2121,18 +2109,6 @@ footer {
     .size-distance-table-container {
         overflow-x: scroll; /* Always show scrollbar on mobile */
         padding-bottom: 0.5rem; /* Space for scrollbar */
-    }
-
-    /* Shadow hint for horizontal scroll */
-    .size-distance-table-container::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 30px;
-        height: calc(100% - 0.5rem);
-        background: linear-gradient(to left, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 100%);
-        pointer-events: none;
     }
 
     .size-distance-table {
