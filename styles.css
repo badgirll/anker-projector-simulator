@@ -2,6 +2,42 @@
    Nebula Projector Simulator - Enhanced Design
    ============================================ */
 
+/* Mont for Anker Custom Font */
+@font-face {
+    font-family: 'Mont for Anker';
+    src: url('./fonts/MontForAnker-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Mont for Anker';
+    src: url('./fonts/MontForAnker-Book.otf') format('opentype');
+    font-weight: 450;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Mont for Anker';
+    src: url('./fonts/MontForAnker-SemiBold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Mont for Anker';
+    src: url('./fonts/MontForAnker-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Mont for Anker';
+    src: url('./fonts/MontForAnker-Heavy.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -74,6 +110,11 @@ body {
     font-size: 1.15rem;
     opacity: 0.95;
     font-weight: 400;
+}
+
+.anker-brand {
+    font-family: 'Mont for Anker', sans-serif;
+    font-weight: 700;
 }
 
 /* ============================================
@@ -1140,9 +1181,6 @@ body {
     text-align: center;
     margin-top: 1rem;
     padding: 0.75rem;
-    background: rgba(23, 187, 239, 0.05);
-    border-radius: 8px;
-    border-left: 3px solid #17BBEF;
 }
 
 /* ============================================
