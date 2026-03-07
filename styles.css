@@ -1052,42 +1052,102 @@ body {
     margin-top: 1.5rem;
 }
 
+.room-guide-section h2 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
 .guide-description {
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
 }
 
 .room-guide-table {
     overflow-x: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .room-guide-table table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .room-guide-table th,
 .room-guide-table td {
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-light);
-    font-size: 0.9rem;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.95rem;
 }
 
 .room-guide-table th {
-    background: linear-gradient(135deg, rgba(23, 187, 239, 0.1) 0%, rgba(13, 168, 219, 0.1) 100%);
-    font-weight: 600;
-    color: var(--text-primary);
+    background: linear-gradient(135deg, #17BBEF 0%, #0da8db 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 1.25rem 1.5rem;
+    border: none;
 }
 
-.room-guide-table tbody tr:hover {
-    background: var(--bg-light);
+.room-guide-table th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.room-guide-table th:last-child {
+    border-top-right-radius: 12px;
+}
+
+.room-guide-table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.room-guide-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.room-guide-table tbody tr:nth-child(odd) {
+    background: rgba(23, 187, 239, 0.03);
 }
 
 .room-guide-table tbody tr:nth-child(even) {
-    background: rgba(248, 249, 250, 0.5);
+    background: white;
+}
+
+.room-guide-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(23, 187, 239, 0.08) 0%, rgba(13, 168, 219, 0.08) 100%);
+    transform: scale(1.01);
+    box-shadow: 0 2px 12px rgba(23, 187, 239, 0.15);
+}
+
+.room-guide-table td {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.room-guide-table td:first-child {
+    font-weight: 700;
+    color: #17BBEF;
+    font-size: 1.05rem;
+}
+
+.room-guide-table td:nth-child(2) {
+    color: var(--text-secondary);
+    font-family: 'Courier New', monospace;
+}
+
+.room-guide-table td:last-child {
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 .guide-note {
@@ -1096,6 +1156,10 @@ body {
     font-style: italic;
     text-align: center;
     margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(23, 187, 239, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid #17BBEF;
 }
 
 /* ============================================
@@ -1445,12 +1509,22 @@ footer {
     /* Room guide table compact */
     .room-guide-table th,
     .room-guide-table td {
-        padding: 0.6rem;
+        padding: 0.85rem 1rem;
         font-size: 0.85rem;
+    }
+
+    .room-guide-table th {
+        font-size: 0.9rem;
+        padding: 1rem;
+    }
+
+    .room-guide-table td:first-child {
+        font-size: 0.95rem;
     }
 
     .guide-note {
         font-size: 0.8rem;
+        padding: 0.65rem;
     }
 }
 
@@ -1702,15 +1776,36 @@ footer {
     }
 
     /* Room guide table - extra compact */
+    .room-guide-table {
+        border-radius: 8px;
+    }
+
     .room-guide-table th,
     .room-guide-table td {
-        padding: 0.5rem;
+        padding: 0.7rem 0.6rem;
         font-size: 0.75rem;
     }
 
-    .guide-description,
+    .room-guide-table th {
+        font-size: 0.8rem;
+        padding: 0.85rem 0.6rem;
+    }
+
+    .room-guide-table td:first-child {
+        font-size: 0.85rem;
+    }
+
+    .room-guide-table tbody tr:hover {
+        transform: scale(1);
+    }
+
+    .guide-description {
+        font-size: 0.8rem;
+    }
+
     .guide-note {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+        padding: 0.5rem;
     }
 
     /* Error display - extra compact for small phones */
