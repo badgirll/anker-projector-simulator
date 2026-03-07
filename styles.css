@@ -540,6 +540,25 @@ body {
     scrollbar-color: var(--nebula-primary) rgba(0, 0, 0, 0.05);
 }
 
+/* Bottom shadow indicator for vertical scroll */
+.custom-select-options::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 8px; /* Account for scrollbar width */
+    height: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent);
+    pointer-events: none;
+    border-radius: 0 0 10px 10px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.custom-select-options.scrolled-to-bottom::after {
+    opacity: 0;
+}
+
 /* Scrollbar styling for custom select dropdown */
 .custom-select-options::-webkit-scrollbar {
     width: 8px;
@@ -1284,6 +1303,24 @@ body {
     /* Standard scrollbar styling (Firefox, etc.) */
     scrollbar-width: thin;
     scrollbar-color: var(--nebula-primary) rgba(0, 0, 0, 0.05);
+}
+
+/* Right shadow indicator for horizontal scroll */
+.size-distance-table-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.1), transparent);
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.size-distance-table-container.scrolled-to-end::after {
+    opacity: 0;
 }
 
 /* Scrollbar styling for better visibility */
@@ -2144,5 +2181,22 @@ footer {
 
     .size-distance-table .size-header-unit {
         display: inline;
+    }
+
+    /* First column (screen size) wider for better readability */
+    .size-distance-table th:first-child,
+    .size-distance-table td:first-child {
+        min-width: 85px;
+    }
+
+    /* Purchase buttons - smaller font on mobile */
+    .btn-purchase {
+        padding: 0.9rem;
+        font-size: 0.85rem;
+        gap: 0.5rem;
+    }
+
+    .btn-purchase span:first-child {
+        font-size: 1.1rem;
     }
 }

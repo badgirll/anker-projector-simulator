@@ -1623,6 +1623,66 @@ function renderCompareCard(modelId, containerId) {
 }
 
 // ============================================
+// Scroll Indicator Management
+// ============================================
+function setupScrollIndicators() {
+    // Horizontal scroll indicator for comparison table
+    const tableContainer = document.querySelector('.size-distance-table-container');
+    if (tableContainer) {
+        const checkTableScroll = () => {
+            const scrollLeft = tableContainer.scrollLeft;
+            const maxScroll = tableContainer.scrollWidth - tableContainer.clientWidth;
+
+            if (scrollLeft >= maxScroll - 5) { // 5px threshold
+                tableContainer.classList.add('scrolled-to-end');
+            } else {
+                tableContainer.classList.remove('scrolled-to-end');
+            }
+        };
+
+        tableContainer.addEventListener('scroll', checkTableScroll);
+        // Check initially and after rendering
+        setTimeout(checkTableScroll, 100);
+        window.addEventListener('resize', checkTableScroll);
+    }
+
+    // Vertical scroll indicator for custom select dropdown
+    const setupDropdownIndicator = () => {
+        const dropdown = document.getElementById('custom-select-options');
+        if (dropdown) {
+            const checkDropdownScroll = () => {
+                const scrollTop = dropdown.scrollTop;
+                const maxScroll = dropdown.scrollHeight - dropdown.clientHeight;
+
+                if (scrollTop >= maxScroll - 5) { // 5px threshold
+                    dropdown.classList.add('scrolled-to-bottom');
+                } else {
+                    dropdown.classList.remove('scrolled-to-bottom');
+                }
+            };
+
+            dropdown.addEventListener('scroll', checkDropdownScroll);
+            // Check when dropdown is opened
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'class') {
+                        if (dropdown.classList.contains('show')) {
+                            setTimeout(checkDropdownScroll, 50);
+                        }
+                    }
+                });
+            });
+            observer.observe(dropdown, { attributes: true });
+        }
+    };
+
+    setupDropdownIndicator();
+}
+
+// ============================================
 // Initialize on page load
 // ============================================
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    setupScrollIndicators();
+});
