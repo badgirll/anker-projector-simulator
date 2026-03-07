@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <div id="distance-input-container" style="display: none;">
-                            <h2>投影距離</h2>
+                            <h2>希望する投影距離</h2>
                             <div class="input-group">
                                 <label for="throw-distance">距離 (m)</label>
                                 <input type="number" id="throw-distance" placeholder="例: 2.7" min="0.1" max="10" step="0.1" value="2.7">
@@ -235,20 +235,36 @@
 
         <!-- Compare Mode -->
         <main class="mode-content" id="compare-mode">
-            <div class="compare-layout">
-                <div class="compare-column">
-                    <select id="compare-model-1" class="compare-select">
-                        <option value="">プロジェクターを選択</option>
-                    </select>
-                    <div id="compare-card-1" class="compare-card"></div>
+            <!-- Size to Distance Comparison Table -->
+            <section class="card size-distance-table-section">
+                <h2>📊 画面サイズ別 投影距離比較表</h2>
+                <p class="table-description">各機種が対応している画面サイズと必要な投影距離を一覧で比較できます。</p>
+                <div class="size-distance-table-container">
+                    <table class="size-distance-table" id="size-distance-table">
+                        <!-- Table will be dynamically generated -->
+                    </table>
                 </div>
-                <div class="compare-column">
-                    <select id="compare-model-2" class="compare-select">
-                        <option value="">プロジェクターを選択</option>
-                    </select>
-                    <div id="compare-card-2" class="compare-card"></div>
+            </section>
+
+            <!-- Model Comparison Section -->
+            <section class="card model-compare-section">
+                <h2>🔄 モデルを比較する</h2>
+                <p class="table-description">2つのプロジェクターを選んで、スペックを詳しく比較できます。</p>
+                <div class="compare-layout">
+                    <div class="compare-column">
+                        <select id="compare-model-1" class="compare-select">
+                            <option value="">プロジェクターを選択</option>
+                        </select>
+                        <div id="compare-card-1" class="compare-card"></div>
+                    </div>
+                    <div class="compare-column">
+                        <select id="compare-model-2" class="compare-select">
+                            <option value="">プロジェクターを選択</option>
+                        </select>
+                        <div id="compare-card-2" class="compare-card"></div>
+                    </div>
                 </div>
-            </div>
+            </section>
         </main>
 
         <footer>

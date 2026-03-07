@@ -149,6 +149,7 @@ function init() {
     setupEventListeners();
     setupCustomSelectMobile();
     populateCompareSelects();
+    renderSizeDistanceTable();
 }
 
 // ============================================
@@ -507,6 +508,59 @@ function populateCompareSelects() {
 
     document.getElementById('compare-model-1').innerHTML = '<option value="">プロジェクターを選択</option>' + options;
     document.getElementById('compare-model-2').innerHTML = '<option value="">プロジェクターを選択</option>' + options;
+}
+
+// ============================================
+// Render Size to Distance Comparison Table
+// ============================================
+function renderSizeDistanceTable() {
+    const table = document.getElementById('size-distance-table');
+
+    if (!table) {
+        return;
+    }
+
+    const screenSizes = [35, 40, 60, 80, 100, 120, 150, 180, 200, 300];
+
+    // Get all projectors in order
+    const projectorIds = Object.keys(projectorData);
+
+    // Build table header
+    let headerHTML = '<thead><tr><th>画面サイズ<span class="size-header-unit"> (インチ)</span></th>';
+    projectorIds.forEach(id => {
+        const projector = projectorData[id];
+        headerHTML += `
+            <th>
+                <div class="projector-header">
+                    <img src="${projector.image}" alt="${projector.name}" class="projector-header-img">
+                    <div class="projector-header-name">${projector.name}</div>
+                </div>
+            </th>
+        `;
+    });
+    headerHTML += '</tr></thead>';
+
+    // Build table body
+    let bodyHTML = '<tbody>';
+    screenSizes.forEach(size => {
+        bodyHTML += `<tr><td><strong>${size}<span class="size-unit">インチ</span></strong></td>`;
+
+        projectorIds.forEach(id => {
+            const projector = projectorData[id];
+            const distance = interpolateDistance(projector.dataPoints, size);
+
+            if (distance !== null) {
+                bodyHTML += `<td>${distance.toFixed(2)}m</td>`;
+            } else {
+                bodyHTML += `<td class="not-available">-</td>`;
+            }
+        });
+
+        bodyHTML += '</tr>';
+    });
+    bodyHTML += '</tbody>';
+
+    table.innerHTML = headerHTML + bodyHTML;
 }
 
 // ============================================

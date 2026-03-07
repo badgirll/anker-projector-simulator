@@ -202,6 +202,36 @@ body {
     margin-bottom: 1.5rem;
     color: var(--text-primary);
     letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Step Badges */
+.calc-mode-section h2::before,
+.input-section h2::before,
+.projector-section h2::before {
+    content: '';
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    background: var(--nebula-primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+    letter-spacing: 0.02em;
+}
+
+.calc-mode-section h2::before {
+    content: 'STEP 1';
+}
+
+.input-section h2::before {
+    content: 'STEP 2';
+}
+
+.projector-section h2::before {
+    content: 'STEP 3';
 }
 
 /* ============================================
@@ -1198,8 +1228,119 @@ body {
 }
 
 /* ============================================
+   Size to Distance Comparison Table
+   ============================================ */
+.size-distance-table-section {
+    margin-bottom: 2rem;
+}
+
+.size-distance-table-section h2 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.table-description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.size-distance-table-container {
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.size-distance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+
+.size-distance-table th,
+.size-distance-table td {
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.size-distance-table th:first-child,
+.size-distance-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+}
+
+.size-distance-table th {
+    background: var(--bg-light);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-light);
+    font-size: 0.85rem;
+}
+
+.size-distance-table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.size-distance-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.size-distance-table tbody tr:nth-child(odd) {
+    background: rgba(23, 187, 239, 0.03);
+}
+
+.size-distance-table tbody tr:nth-child(even) {
+    background: white;
+}
+
+.size-distance-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(23, 187, 239, 0.08) 0%, rgba(13, 168, 219, 0.08) 100%);
+    transform: scale(1.005);
+}
+
+.size-distance-table .not-available {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.projector-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.projector-header-img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.projector-header-name {
+    font-size: 0.8rem;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.size-distance-table .size-header-unit {
+    display: none;
+}
+
+/* ============================================
    Compare Mode
    ============================================ */
+.model-compare-section {
+    margin-top: 2rem;
+}
+
+.model-compare-section h2 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
 .compare-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1438,6 +1579,15 @@ footer {
         order: 3;
     }
 
+    /* Step badges - reorder for mobile */
+    .input-section h2::before {
+        content: 'STEP 3';
+    }
+
+    .projector-section h2::before {
+        content: 'STEP 2';
+    }
+
     /* Cards with reduced padding */
     .card {
         padding: 1.25rem;
@@ -1563,6 +1713,26 @@ footer {
     .purchase-section {
         margin-top: 0.75rem;
         padding-top: 0.75rem;
+    }
+
+    /* Size distance table compact */
+    .size-distance-table {
+        font-size: 0.8rem;
+    }
+
+    .size-distance-table th,
+    .size-distance-table td {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .projector-header-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .projector-header-name {
+        font-size: 0.7rem;
     }
 
     /* Room guide table compact */
@@ -1887,5 +2057,33 @@ footer {
 
     .error-detail-item .value {
         font-size: 0.85rem;
+    }
+
+    /* Size distance table - extra compact */
+    .size-distance-table {
+        font-size: 0.7rem;
+    }
+
+    .size-distance-table th,
+    .size-distance-table td {
+        padding: 0.4rem 0.3rem;
+        font-size: 0.7rem;
+    }
+
+    .projector-header-img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .projector-header-name {
+        font-size: 0.65rem;
+    }
+
+    .size-distance-table .size-unit {
+        display: none;
+    }
+
+    .size-distance-table .size-header-unit {
+        display: inline;
     }
 }
