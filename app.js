@@ -918,6 +918,10 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
     const container = document.getElementById('visualization');
     const throwDistanceCm = throwDistanceM * 100;
 
+    // Responsive settings for mobile
+    const isMobile = window.innerWidth <= 480;
+    const fontSizeMultiplier = isMobile ? 1.4 : 1; // 40% larger fonts on mobile
+
     // Canvas dimensions
     const canvasWidth = 900;
     const canvasHeight = 500;
@@ -975,11 +979,11 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
               x2="${projectorX}" y2="${projectorY}"
               stroke="#dc3545" stroke-width="6" opacity="0.7"/>
         <text x="${centerX}" y="${centerY - 20}"
-              fill="#dc3545" font-size="34" font-weight="700" text-anchor="middle">
+              fill="#dc3545" font-size="${34 * fontSizeMultiplier}" font-weight="700" text-anchor="middle">
             ⚠️ 投影不可
         </text>
         <text x="${centerX}" y="${centerY + 15}"
-              fill="#dc3545" font-size="17" font-weight="600" text-anchor="middle" opacity="0.8">
+              fill="#dc3545" font-size="${17 * fontSizeMultiplier}" font-weight="600" text-anchor="middle" opacity="0.8">
             投影サイズが大きすぎます
         </text>
     ` : '';
@@ -1049,35 +1053,35 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
 
                 <!-- Distance label (TOP area - ABSOLUTE position) -->
                 <g>
-                    <rect x="${centerX - 95}" y="${distanceLabelY - 32}"
-                          width="190" height="60" rx="10"
+                    <rect x="${centerX - 95 * fontSizeMultiplier}" y="${distanceLabelY - 32}"
+                          width="${190 * fontSizeMultiplier}" height="${60 * fontSizeMultiplier}" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
                     <text x="${centerX}" y="${distanceLabelY - 15}"
-                          fill="#2d3748" font-size="15" font-weight="600" text-anchor="middle">
+                          fill="#2d3748" font-size="${15 * fontSizeMultiplier}" font-weight="600" text-anchor="middle">
                         投影距離
                     </text>
                     <text x="${centerX}" y="${distanceLabelY + 28}"
-                          fill="#17BBEF" font-size="32" font-weight="700" text-anchor="middle" style="line-height: 1.2;">
+                          fill="#17BBEF" font-size="${32 * fontSizeMultiplier}" font-weight="700" text-anchor="middle" style="line-height: 1.2;">
                         ${throwDistanceM.toFixed(2)}m
                     </text>
                 </g>
 
                 <!-- Screen label (LEFT of screen - ABSOLUTE position) -->
                 <g>
-                    <rect x="${screenLabelX}" y="${centerY - 48}"
-                          width="170" height="95" rx="10"
+                    <rect x="${screenLabelX}" y="${centerY - 48 * fontSizeMultiplier}"
+                          width="${170 * fontSizeMultiplier}" height="${95 * fontSizeMultiplier}" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
                     <text x="${screenLabelX + 10}" y="${centerY - 30}"
-                          fill="#2d3748" font-size="15" font-weight="600">
+                          fill="#2d3748" font-size="${15 * fontSizeMultiplier}" font-weight="600">
                         画面サイズ
                     </text>
                     <text x="${screenLabelX + 10}" y="${centerY + 10}"
                           fill="${isError ? '#dc3545' : '#17BBEF'}"
-                          font-size="30" font-weight="700" style="line-height: 1.2;">
+                          font-size="${30 * fontSizeMultiplier}" font-weight="700" style="line-height: 1.2;">
                         ${Math.round(screenDiagonal)}インチ
                     </text>
                     <text x="${screenLabelX + 10}" y="${centerY + 42}"
-                          fill="#4a5568" font-size="14" font-weight="500">
+                          fill="#4a5568" font-size="${14 * fontSizeMultiplier}" font-weight="500">
                         ${Math.round(screenWidth)}×${Math.round(screenHeight)}cm
                     </text>
                 </g>
@@ -1092,12 +1096,12 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
 
                 <!-- Projector label (BOTTOM area - ABSOLUTE position) -->
                 <g>
-                    <rect x="${projectorX - 75}" y="${projectorLabelY - 20}"
-                          width="150" height="38" rx="10"
+                    <rect x="${projectorX - 75 * fontSizeMultiplier}" y="${projectorLabelY - 20}"
+                          width="${150 * fontSizeMultiplier}" height="${38 * fontSizeMultiplier}" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
                     <text x="${projectorX}" y="${projectorLabelY + 5}"
                           fill="${isError ? '#dc3545' : '#17BBEF'}"
-                          font-size="18" font-weight="700" text-anchor="middle">
+                          font-size="${18 * fontSizeMultiplier}" font-weight="700" text-anchor="middle">
                         プロジェクター
                     </text>
                 </g>
@@ -1109,7 +1113,7 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
                           width="5" height="${tv65Width * scale}"
                           fill="#10b981" stroke="none"/>
                     <text x="${screenX - 35}" y="${centerY}"
-                          fill="#10b981" font-size="16" font-weight="600"
+                          fill="#10b981" font-size="${16 * fontSizeMultiplier}" font-weight="600"
                           text-anchor="middle" transform="rotate(-90 ${screenX - 35} ${centerY})">
                         📺 65型TV（基準）
                     </text>
@@ -1143,9 +1147,10 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
     const isMobile = window.innerWidth <= 480;
     const canvasHeight = isMobile ? 450 : 600;
     const padding = isMobile ? 30 : 40;
-    const viewBoxWidth = isMobile ? 600 : 900;
-    const viewBoxStartX = isMobile ? -80 : 0; // Shift right on mobile to show wall height label
+    const viewBoxWidth = isMobile ? 700 : 900;
+    const viewBoxStartX = isMobile ? -100 : 0; // Shift left on mobile to show wall height label
     const centerX = viewBoxWidth / 2;
+    const fontSizeMultiplier = isMobile ? 1.3 : 1; // 30% larger fonts on mobile
 
     // Calculate scale to fit wall and screen (80-90% of canvas width)
     const targetWallWidth = viewBoxWidth * 0.85; // 85% of viewBox width
@@ -1177,11 +1182,11 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
         <rect x="${viewBoxStartX}" y="0" width="${viewBoxWidth}" height="${canvasHeight}"
               fill="rgba(220, 53, 69, 0.08)" />
         <text x="${centerX}" y="${wallY - 30}"
-              fill="#dc3545" font-size="32" font-weight="700" text-anchor="middle">
+              fill="#dc3545" font-size="${32 * fontSizeMultiplier}" font-weight="700" text-anchor="middle">
             ⚠️ 投影不可
         </text>
         <text x="${centerX}" y="${wallY + 10}"
-              fill="#dc3545" font-size="16" font-weight="600" text-anchor="middle" opacity="0.8">
+              fill="#dc3545" font-size="${16 * fontSizeMultiplier}" font-weight="600" text-anchor="middle" opacity="0.8">
             投影サイズが大きすぎます
         </text>
     ` : '';
@@ -1224,7 +1229,7 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
                           x2="${wallX - wallWidthScaled / 2 - 25}" y2="${wallY + wallHeightScaled / 2}"
                           stroke="#6c757d" stroke-width="2"/>
                     <text x="${wallX - wallWidthScaled / 2 - 45}" y="${wallY}"
-                          fill="#6c757d" font-size="14" font-weight="600" text-anchor="middle"
+                          fill="#6c757d" font-size="${14 * fontSizeMultiplier}" font-weight="600" text-anchor="middle"
                           transform="rotate(-90 ${wallX - wallWidthScaled / 2 - 45} ${wallY})">
                         平均的な壁の高さ 2.4m
                     </text>
@@ -1278,20 +1283,20 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
                         const labelX = shouldShiftRight ? doorRightEdge + labelWidth / 2 + 30 : screenX;
 
                         return `
-                    <rect x="${labelX - 120}" y="${screenY + screenHeightScaled / 2 + 20}"
-                          width="240" height="85" rx="10"
+                    <rect x="${labelX - 120 * fontSizeMultiplier}" y="${screenY + screenHeightScaled / 2 + 20}"
+                          width="${240 * fontSizeMultiplier}" height="${85 * fontSizeMultiplier}" rx="10"
                           fill="rgba(255, 255, 255, 0.85)" stroke="none"/>
                     <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 35}"
-                          fill="#2d3748" font-size="15" font-weight="600" text-anchor="middle">
+                          fill="#2d3748" font-size="${15 * fontSizeMultiplier}" font-weight="600" text-anchor="middle">
                         画面サイズ
                     </text>
                     <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 75}"
                           fill="${isError ? '#dc3545' : '#17BBEF'}"
-                          font-size="30" font-weight="700" text-anchor="middle" style="line-height: 1.2;">
+                          font-size="${30 * fontSizeMultiplier}" font-weight="700" text-anchor="middle" style="line-height: 1.2;">
                         ${Math.round(screenDiagonal)}インチ
                     </text>
                     <text x="${labelX}" y="${screenY + screenHeightScaled / 2 + 103}"
-                          fill="#4a5568" font-size="15" font-weight="500" text-anchor="middle">
+                          fill="#4a5568" font-size="${15 * fontSizeMultiplier}" font-weight="500" text-anchor="middle">
                         ${Math.round(screenWidth)} × ${Math.round(screenHeight)} cm
                     </text>
                         `;
