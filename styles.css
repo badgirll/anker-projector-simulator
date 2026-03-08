@@ -1885,6 +1885,17 @@ footer {
         position: relative;
         padding-bottom: 0; /* Remove bottom padding to connect with results */
         margin-bottom: 0;
+        /* Remove card styling completely on mobile */
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        transform: none !important; /* Disable hover transform */
+    }
+
+    .visualization-card:hover {
+        box-shadow: none !important;
+        transform: none !important;
     }
 
     /* Add "投影結果" heading above visualization on mobile */
@@ -1895,11 +1906,16 @@ footer {
         font-weight: 600;
         color: var(--text-primary);
         padding: 0.6rem 0.6rem 0.3rem;
+        background: white;
+        margin: -0.25rem -0.25rem 0 -0.25rem;
+        border-radius: 10px 10px 0 0;
     }
 
     .visualization {
         min-height: 200px;
         margin-bottom: 0;
+        background: white;
+        padding: 0.5rem;
     }
 
     /* Hide duplicate "投影結果" heading from results-card on mobile */
@@ -1910,11 +1926,13 @@ footer {
     /* Remove top margin and padding from results-card to make it visually connected */
     .results-card {
         margin-top: 0;
-        padding-top: 0;
+        padding-top: 0.75rem;
         border-top: none;
-        box-shadow: none;
-        background: transparent;
+        box-shadow: none !important;
+        background: white !important;
         padding: 0.75rem;
+        border-radius: 0 0 10px 10px !important;
+        margin-bottom: 0.3rem;
     }
 
     .view-toggle {
