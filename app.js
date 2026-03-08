@@ -986,13 +986,13 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
     const isMobile = window.innerWidth <= 480;
     const fontSizeMultiplier = isMobile ? 1.4 : 1; // 40% larger fonts on mobile
 
-    // Canvas dimensions
+    // Canvas dimensions - match front view height on mobile
     const canvasWidth = 900;
-    const canvasHeight = 500;
+    const canvasHeight = isMobile ? 450 : 500;
 
-    // Reserve space for labels
+    // Reserve space for labels - more top padding on mobile for better balance
     const labelPadding = 180; // Space for left label
-    const topBottomPadding = 80; // Space for top and bottom labels
+    const topBottomPadding = isMobile ? 100 : 80; // Extra space on mobile for top label
 
     // Available space for diagram
     const availableWidth = canvasWidth - labelPadding;
@@ -1211,8 +1211,8 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
     const isMobile = window.innerWidth <= 480;
     const canvasHeight = isMobile ? 450 : 600;
     const padding = isMobile ? 30 : 40;
-    const viewBoxWidth = isMobile ? 700 : 900;
-    const viewBoxStartX = isMobile ? -100 : 0; // Shift left on mobile to show wall height label
+    const viewBoxWidth = isMobile ? 800 : 900; // Wider on mobile to prevent right side clipping
+    const viewBoxStartX = isMobile ? -150 : 0; // Shift more left on mobile to show wall height label
     const centerX = viewBoxWidth / 2;
     const fontSizeMultiplier = isMobile ? 1.3 : 1; // 30% larger fonts on mobile
 

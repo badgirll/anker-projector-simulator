@@ -1883,6 +1883,8 @@ footer {
     .visualization-card {
         padding: 0.25rem;
         position: relative;
+        padding-bottom: 0; /* Remove bottom padding to connect with results */
+        margin-bottom: 0;
     }
 
     /* Add "投影結果" heading above visualization on mobile */
@@ -1897,6 +1899,7 @@ footer {
 
     .visualization {
         min-height: 200px;
+        margin-bottom: 0;
     }
 
     /* Hide duplicate "投影結果" heading from results-card on mobile */
@@ -1904,9 +1907,14 @@ footer {
         display: none;
     }
 
-    /* Remove top margin from results-card to make it visually connected */
+    /* Remove top margin and padding from results-card to make it visually connected */
     .results-card {
         margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 0.75rem;
     }
 
     .view-toggle {
