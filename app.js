@@ -1211,13 +1211,13 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
     const isMobile = window.innerWidth <= 480;
     const canvasHeight = isMobile ? 450 : 600;
     const padding = isMobile ? 30 : 40;
-    const viewBoxWidth = isMobile ? 950 : 900; // Slightly wider on mobile
-    const viewBoxStartX = isMobile ? -140 : 0; // Further left shift to minimize left margin
+    const viewBoxWidth = isMobile ? 900 : 900; // Narrower viewBox for larger content
+    const viewBoxStartX = isMobile ? -180 : 0; // Maximum left shift
     const centerX = viewBoxWidth / 2;
     const fontSizeMultiplier = isMobile ? 1.3 : 1; // 30% larger fonts on mobile
 
     // Calculate scale to fit wall and screen (80-90% of canvas width)
-    const targetWallWidth = viewBoxWidth * (isMobile ? 0.95 : 0.85); // 95% on mobile for larger display
+    const targetWallWidth = viewBoxWidth * (isMobile ? 0.98 : 0.85); // 98% on mobile for maximum display
     const wallWidthCm = 400; // Standard wall width representation in cm
     const contentHeight = wallHeight;
 
