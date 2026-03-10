@@ -30,10 +30,13 @@ Then open http://localhost:8000 in your browser.
 
 **index.html** - Two-mode interface with two-column layout
 - Mode tabs: シミュレーション (single simulator) and モデル比較 (comparison tools)
+- OGP meta tags for social media sharing (Facebook, Twitter, LINE)
+  - og:image points to ogp.png (117KB)
+  - Optimized preview for SNS sharing
 - Left column: Calculation mode toggle (STEP 1), size/distance input with sliders (STEP 2/3), projector selection (STEP 2/3)
   - Desktop: Card-based projector selection with images
   - Mobile: Custom dropdown with product images and pricing
-- Right column: View toggle (top view/front view), SVG visualization, results display, purchase buttons (official + Amazon), product specs, room size guide
+- Right column: View toggle (top view/front view), SVG visualization with "※概算値" captions, results display, purchase buttons (official + Amazon), product specs, room size guide
 - Comparison mode: Size-distance table for all 7 projectors, side-by-side model comparison
 - All text in Japanese
 
@@ -44,8 +47,10 @@ Then open http://localhost:8000 in your browser.
 - `calculate()`: Main calculation function supporting dual modes (size-to-distance and distance-to-size)
 - `getProjectorRange()`: Calculates min/max size and distance for recommended ranges
 - `renderProjectorCards()`: Generates projector selection cards with dynamic range display
-- `drawTopView()`: Fixed-scale SVG top view with 65型TV as constant reference (150px), projection cone, and distance visualization
-- `drawFrontView()`: Front view showing screen size vs 2.4m wall height with door silhouette
+- `drawTopView()`: Fixed-scale SVG top view with 65型TV as constant reference (150px), projection cone, distance visualization, and "※概算値" caption
+- `drawFrontView()`: Front view showing screen size vs 2.4m wall height with door silhouette and "※概算値" caption
+  - **CRITICAL Mobile Settings** (line ~1211): viewBoxWidth: 950, viewBoxStartX: -110, targetWallWidth: 93%
+  - These values are the result of 6 iterations to prevent right-side clipping while maximizing display size
 - `renderSizeDistanceTable()`: Generates 10-size × 7-projector comparison table with product images
 - `renderModelComparison()`: Side-by-side comparison of two selected projectors
 - Mobile optimizations: Font size multipliers (1.4x top view, 1.3x front view), viewBox adjustments
@@ -170,6 +175,17 @@ Example for zoom model:
 - Edit `renderModelComparison()` for side-by-side 2-model comparison
 - Table screen sizes array: `[35, 40, 60, 80, 100, 120, 150, 180, 200, 300]`
 
+**Update OGP (social media preview):**
+- Replace ogp.png in project root with new image (recommended size: 1200×630px)
+- Update meta tags in index.html if needed (lines 8-25)
+- Test with Facebook Share Debugger: https://developers.facebook.com/tools/debug/
+- Test with Twitter Card Validator: https://cards-dev.twitter.com/validator
+
+**Configure Vercel Analytics:**
+- NEVER add `analytics` property to vercel.json (causes schema error)
+- Enable through Vercel dashboard: Project → Analytics → Enable Analytics
+- Speed Insights available in Pro plan
+
 ## Notes
 
 - No external dependencies or API calls (except Google Fonts for Noto Sans JP)
@@ -180,8 +196,14 @@ Example for zoom model:
 - Custom Mont for Anker font loaded from local `/fonts/` directory
 - Fixed-scale visualization ensures consistent size perception across different inputs
 - Mobile optimizations: larger fonts (1.3-1.4x), adjusted viewBox, custom dropdown
+  - Front view mobile settings (CRITICAL): viewBoxWidth 950px, viewBoxStartX -110px, targetWallWidth 93%
+  - DO NOT modify these values without careful testing - they prevent right-side clipping
 - Error handling: Clear messages for out-of-range sizes/distances
-- Purchase buttons link to both official Anker site and Amazon with tracking
-- Brightness advice: Detailed recommendations based on lumens (3500, 1800, 650, 380, 300, 200, 150)
+- Purchase buttons link to both official Anker site and Amazon with tracking (affiliate tag: aoositmdtlpg-22)
+- Brightness advice: Detailed recommendations based on lumens (3500, 1800, 650, 380, 300, 200, 150) - full text list in DESIGN.md
 - Room size calculations: Based on projection distance × 1.2 for depth, assuming square rooms
 - 7 projector models supported: Nebula X1, Cosmos 4K SE, Soundcore Nebula P1, Capsule 3 Laser, Capsule 3, Soundcore Nebula P1i, Capsule Air
+- OGP (Open Graph Protocol) configured for social media sharing with custom ogp.png image
+- "※概算値" notation displayed in visualization captions (NOT in view toggle buttons)
+- Vercel Analytics: Must be enabled via dashboard (vercel.json causes schema validation error)
+- See DESIGN.md for comprehensive technical specifications (842 lines)
