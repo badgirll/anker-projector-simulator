@@ -1187,7 +1187,7 @@ function drawTopView(screenWidth, screenHeight, throwDistanceM, screenDiagonal, 
                 ${errorOverlay}
             </svg>
             <div class="viz-caption">
-                ${isError ? '⚠️ 投影サイズが大きすぎます' : '💡 上から見た投影イメージ（光の広がりを再現）'}
+                ${isError ? '⚠️ 投影サイズが大きすぎます' : '💡 上から見た投影イメージ（光の広がりを再現）※概算値'}
             </div>
         </div>
     `;
@@ -1370,7 +1370,7 @@ function drawFrontView(screenWidth, screenHeight, screenDiagonal, isError = fals
                 ${errorOverlay}
             </svg>
             <div class="viz-caption">
-                ${isError ? '⚠️ 投影サイズが大きすぎます' : '🖼️ 正面から見た投影イメージ（壁との比較）'}
+                ${isError ? '⚠️ 投影サイズが大きすぎます' : '🖼️ 正面から見た投影イメージ（壁との比較）※概算値'}
             </div>
         </div>
     `;
